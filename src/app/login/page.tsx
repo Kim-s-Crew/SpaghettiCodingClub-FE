@@ -45,7 +45,7 @@ const LoginPage = () => {
             <Spacer />
             <div className="flex gap-2 justify-between">
               <Button type="submit" color="danger">
-                로그인
+                로그인 test
               </Button>
               <Link href="/register">
                 <Button>회원가입</Button>
