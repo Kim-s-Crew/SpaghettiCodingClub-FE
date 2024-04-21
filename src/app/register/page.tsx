@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import nbcIcon from "@/assets/images/scc-og.jpg";
+import nbcIcon from "@/assets/images/spaghetti_logo.png";
 import { Button, Checkbox, Input, Select, SelectItem } from "@nextui-org/react";
 
 const RegisterPage = () => {

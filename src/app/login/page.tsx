@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import nbcIcon from "@/assets/images/scc-og.jpg";
+import nbcIcon from "@/assets/images/spaghetti_logo.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Input, Spacer } from "@nextui-org/react";
@@ -45,7 +45,7 @@ const LoginPage = () => {
             <Spacer />
             <div className="flex gap-2 justify-between">
               <Button type="submit" color="danger">
-                로그인
+                로그인 test
               </Button>
               <Link href="/register">
                 <Button>회원가입</Button>
