@@ -18,6 +18,9 @@ const Header = () => {
             <Link href={'/admin/student'}>수강생 관리</Link>
           </li>
           <li>
+            <Link href={'/admin/student/userId'}>수강생 상세</Link>
+          </li>
+          <li>
             <Link href={'/admin/student/userId'}>트랙 관리</Link>
           </li>
           <li>
