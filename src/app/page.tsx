@@ -34,6 +34,9 @@ export default function Home() {
           <li>
             <Link href={'/admin/track'}>트랙 관리 페이지</Link>
           </li>
+          <li>
+            <Link href={'/admin/schedule'}>일정 관리</Link>
+          </li>
         </ul>
       </div>
     </>
