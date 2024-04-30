@@ -29,6 +29,12 @@ const Header = () => {
           <li>
             <Link href={'/admin/notice'}>공지사항 관리</Link>
           </li>
+          <li>
+            <Link href={'/admin/schedule'}>일정 관리</Link>
+          </li>
+          <li>
+            <Link href={'/admin/teambuilding'}>팀 빌딩</Link>
+          </li>
         </ul>
         <div>
           <span className='text-3xl'>🚪</span>
