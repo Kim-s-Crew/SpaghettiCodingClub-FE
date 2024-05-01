@@ -19,7 +19,8 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-calendar": "^5.0.0",
     "react-dom": "^18",
-    "sweetalert2": "^11.10.8"
+    "sweetalert2": "^11.10.8",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -2,8 +2,11 @@ import React from 'react';
 
 import { Button, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
+// import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Notice = () => {
+  // const router = useRouter();
   const dummyNotice = [
     {
       title: '중요한 공지',
@@ -43,7 +46,14 @@ const Notice = () => {
           </div>
         );
       })}
-      <Button color='warning'>글쓰기</Button>
+      <Link href={'/admin/notice/write'}>
+        <Button
+          color='warning'
+          // onClick={() => router.push('/admin/notice/write')}
+        >
+          글쓰기
+        </Button>
+      </Link>
     </div>
   );
 };
