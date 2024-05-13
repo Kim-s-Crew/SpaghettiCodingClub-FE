@@ -19,6 +19,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-calendar": "^5.0.0",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.4",
     "sweetalert2": "^11.10.8",
     "zustand": "^4.5.2"
   },

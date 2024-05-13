@@ -4,6 +4,8 @@ import Calendar from 'react-calendar';
 import dayjs from 'dayjs';
 import Swal from 'sweetalert2';
 import { TimeInput } from '@nextui-org/react';
+import Modal from '@/components/ui/Modal';
+import ScheduleInput from '@/components/admin/schedule/ScheduleInput';
 
 type scheduletype = {
   content: string;
@@ -13,16 +15,19 @@ type scheduletype = {
 };
 
 const CalendarPage = () => {
+  const [modalOpen, setmodalOpen] = useState(false);
   const [date, onChange] = useState(new Date());
   const [schedules, setSchedule] = useState<scheduletype[]>([]);
   const [dayList, setDayList] = useState(['2024-03-26', '2024-03-27']);
   //   const [showSchedule, setShowSchedule] = useState(false);
   console.log(schedules);
-  console.log(dayList);
+  // console.log(dayList);
 
   let starttimeInput: HTMLInputElement;
   let endtimeInput: HTMLInputElement;
   let contentInput: HTMLInputElement;
+
+  const selectedDate = dayjs(date).format('YYYY년 M월 D일');
 
   // const dayList = ["2024-03-26", "2024-03-27"];
 
@@ -43,62 +48,9 @@ const CalendarPage = () => {
       <>
         <div>{contents}</div>
         <span
-          onClick={(e) => {
-            e.stopPropagation();
-            Swal.fire({
-              title: dayjs(date).format('YYYY-MM-DD'),
-              html: `    <label for="starttime">시작시간</label>
-                            <input type="time" id="starttime" class="swal2-input" placeholder="Password">
-                            <br/>
-                            <label for="endtime">끝나는 시간</label>
-                            <input type="time" id="endtime" class="swal2-input" placeholder="Password">
-                                  <input type="text" id="content" class="swal2-input" placeholder="content">
-                                `,
-              confirmButtonText: '일정 저장',
-              showCancelButton: true,
-              cancelButtonText: '취소',
-              focusConfirm: false,
-              didOpen: () => {
-                const popup = Swal.getPopup()!;
-                contentInput = popup.querySelector(
-                  '#content'
-                ) as HTMLInputElement;
-                starttimeInput = popup.querySelector(
-                  '#starttime'
-                ) as HTMLInputElement;
-                endtimeInput = popup.querySelector(
-                  '#endtime'
-                ) as HTMLInputElement;
-              },
-              preConfirm: () => {
-                const content = contentInput.value;
-                const starttime = starttimeInput.value;
-                const endtime = endtimeInput.value;
-                const scheduleDate = dayjs(date).format('YYYY-MM-DD');
-
-                if (starttime > endtime) {
-                  Swal.fire('시간을 제대로 입력하세요');
-
-                  return;
-                }
-
-                return { content, starttime, endtime, scheduleDate };
-              },
-            }).then((result) => {
-              console.log('리절트', result);
-              if (result.isDismissed === true) return;
-              // if (result.value === true) {
-              //   alert("시간을 제대로 입력하세요!");
-              //   return;
-              // }
-              console.log('리설트 벨류', result.value);
-              if (result.value !== true) {
-                setSchedule((prev) => [...prev, result.value]);
-
-                setDayList((prev) => [...prev, result.value.scheduleDate]);
-              }
-              console.log('스케줄', schedules);
-            });
+          onClick={() => {
+            console.log('hi');
+            setmodalOpen(true);
           }}
           className='days-btn'
         >
@@ -109,6 +61,11 @@ const CalendarPage = () => {
   };
   return (
     <>
+      {modalOpen && (
+        <Modal setIsOpen={setmodalOpen}>
+          <ScheduleInput selectedDate={selectedDate} />
+        </Modal>
+      )}
       <Calendar
         value={date}
         formatDay={(locale, date) => dayjs(date).format('D')}
