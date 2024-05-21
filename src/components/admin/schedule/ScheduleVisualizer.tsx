@@ -25,7 +25,7 @@ const ScheduleVisualizer = ({ schedules }: Props) => {
           endMinute={schedule.endMinute}
         />
       ))}
-      <Image src={ruler} />
+      {/* <Image src={ruler} /> */}
     </div>
   );
 };

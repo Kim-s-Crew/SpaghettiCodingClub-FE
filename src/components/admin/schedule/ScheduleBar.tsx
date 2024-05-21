@@ -9,76 +9,75 @@ interface Props {
 }
 
 const ScheduleBar = ({ startHour, startMinute, endHour, endMinute }: Props) => {
-  let startPercentage = 0;
-  let endPercentage = 0;
+  function formatTime(hour: number, minute: number) {
+    const formattedHour = hour.toString().padStart(2, '0');
+    const formattedMinute = minute.toString().padStart(2, '0');
+    return `${formattedHour}:${formattedMinute}`;
+  }
 
-  function calculatePercentageInDay(
+  // function parseTime(time) {
+  //   const [hour, minute] = time.split(':').map(Number);
+  //   return [hour, minute];
+  // }
+
+  function setTimeRange(
     startHour: number,
     startMinute: number,
     endHour: number,
     endMinute: number
-  ) {
-    // 입력된 시간을 분 단위로 변환
+  ): { startPercent: number; rangeWidth: number } {
+    // const [startHour, startMinute] = parseTime(startTime);
+    // const [endHour, endMinute] = parseTime(endTime);
+
+    // Validation
     const totalStartMinutes = startHour * 60 + startMinute;
     const totalEndMinutes = endHour * 60 + endMinute;
+    // if (
+    //   totalStartMinutes < 0 ||
+    //   totalStartMinutes >= 1440 ||
+    //   totalEndMinutes <= 0 ||
+    //   totalEndMinutes > 1440 ||
+    //   totalStartMinutes >= totalEndMinutes
+    // ) {
+    //   console.error('Invalid time range');
+    //   return;
+    // }
 
-    // 하루의 총 분 수
-    const totalMinutesInDay = 24 * 60;
-
-    // 시간을 백분율로 계산
-    startPercentage = (totalStartMinutes / totalMinutesInDay) * 100;
-    endPercentage = (totalEndMinutes / totalMinutesInDay) * 100;
-
-    return [Math.round(startPercentage / 2), Math.round(endPercentage / 2)];
+    const startPercent = (totalStartMinutes / 1440) * 100;
+    const endPercent = (totalEndMinutes / 1440) * 100;
+    const rangeWidth = endPercent - startPercent;
+    return { startPercent, rangeWidth };
   }
 
-  //   const startDivNumber = startPercentage / 2;
-  //   const endDivNumber = endPercentage / 2;
-
-  const totalArray = Array.from({ length: 48 }, (_, index) => index + 1);
-
-  // 함수 호출하여 백분율 계산
-  const percentage = calculatePercentageInDay(
+  // Example usage
+  const { startPercent, rangeWidth } = setTimeRange(
+    // `${startHour}:${startMinute}`,
+    // `${endHour}:${endMinute}`
     startHour,
     startMinute,
     endHour,
     endMinute
   );
-  console.log(percentage);
-  const [start, end] = percentage;
-  //   console.log(
-  //     `입력된 시간은 하루 중 약 ${percentage.toFixed(2)}% 에 해당합니다.`
-  //   );
-  function createIntegerArray(start: number, end: number) {
-    const result = [];
-    for (let i = start; i <= end; i++) {
-      result.push(i);
-    }
-    return result;
-  }
-  console.log(createIntegerArray(start, end));
-  const coloredDiv = createIntegerArray(start, end);
 
   return (
-    <section className='flex w-[650px] h-[30px] '>
-      {totalArray.map((item) => {
-        return coloredDiv.includes(item) ? (
-          <div
-            className={`${item + ''} w-full p-1 text-xs bg-blue-400`}
-            key={item}
-          >
-            {/* {item} */}
-          </div>
-        ) : (
-          <div
-            className={`${item + ''} w-full p-1 text-xs bg-slate-400`}
-            key={item}
-          >
-            {/* {item} */}
-          </div>
-        );
-      })}
-    </section>
+    <div className='w-full h-[50px] border-cyan-900 border-1 bg-slate-100 relative mb-7'>
+      <div
+        className={`absolute h-full bg-green-400 z-[1]`}
+        style={{ width: `${rangeWidth}%`, left: `${startPercent}%` }}
+      ></div>
+      <span
+        className='absolute top-[100%] translate-y-[5px] text-[12px] z-[2]'
+        style={{ left: `${startPercent}%` }}
+      >
+        {formatTime(startHour, startMinute)}
+      </span>
+      <span
+        className='absolute top-[100%] translate-y-[5px] text-[12px] z-[2]'
+        style={{ left: `${startPercent + rangeWidth}%` }}
+      >
+        {formatTime(endHour, endMinute)}
+      </span>
+    </div>
   );
 };
 
