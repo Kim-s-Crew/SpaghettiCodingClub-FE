@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
-} from "react-beautiful-dnd";
-import Modal from "@/components/ui/Modal";
-import PlusButton from "@/components/ui/PlusButton";
-import StudentInfo from "@/components/admin/student/StudentInfo";
-import Team from "@/components/admin/teambuilding/Team";
+} from 'react-beautiful-dnd';
+import Modal from '@/components/ui/Modal';
+import PlusButton from '@/components/ui/PlusButton';
+import StudentInfo from '@/components/admin/student/StudentInfo';
+import Team from '@/components/admin/teambuilding/Team';
 
-type TItemStatus = "todo" | "doing";
+type TItemStatus = 'todo' | 'doing';
 
 export type TItem = {
   id: string;
@@ -26,17 +26,21 @@ export type TItems = {
 
 export default function TeamBuildingPage() {
   const initialTeams = {
-    "1조": {
-      id: "1조",
-      list: ["item 1", "item 2", "item 3"],
+    '1조': {
+      id: '1조',
+      list: ['item 1', 'item 2', 'item 3'],
     },
-    "2조": {
-      id: "2조",
+    '2조': {
+      id: '2조',
       list: [],
     },
-    "3조": {
-      id: "3조",
+    '3조': {
+      id: '3조',
       list: [],
+    },
+    임시조: {
+      id: '임시조',
+      list: ['미희', '래준', '대영', '은채'],
     },
   };
   const [teams, setTeams] = useState(initialTeams);
@@ -63,7 +67,7 @@ export default function TeamBuildingPage() {
       // Move the item within the list
       // Start by making a new list without the dragged item
       const newList = start.list.filter(
-        (_: any, idx: number) => idx !== source.index
+        (_: any, idx: number) => idx !== source.index,
       );
 
       // Then insert the item at the right location
@@ -82,7 +86,7 @@ export default function TeamBuildingPage() {
       // If start is different from end, we need to update multiple columns
       // Filter the start list like before
       const newStartList = start.list.filter(
-        (_: any, idx: number) => idx !== source.index
+        (_: any, idx: number) => idx !== source.index,
       );
 
       // Create a new start column
@@ -115,7 +119,7 @@ export default function TeamBuildingPage() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2">
+      <div className='grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2'>
         {Object.values(teams).map((team) => (
           <Team col={team} key={team.id} />
         ))}
