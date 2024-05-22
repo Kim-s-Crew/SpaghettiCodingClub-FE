@@ -39,7 +39,6 @@ const CalendarPage = () => {
   const addContent = ({ date }: any) => {
     // 해당 날짜(하루)에 추가할 컨텐츠의 배열
     const contents = [];
-
     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
     if (dayList.find((day) => day === dayjs(date).format('YYYY-MM-DD'))) {
       contents.push(
