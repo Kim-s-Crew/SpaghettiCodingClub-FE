@@ -5,13 +5,13 @@ import nbcIcon from '@/assets/images/spaghetti_logo.png';
 import { Button, Checkbox, Input, Select, SelectItem } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { registerFn } from '../apis/auth';
 
 interface FormValues {
-  name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  username: string;
   selectedTrack: string;
   isAdmin: boolean;
   recommend: string;
@@ -32,7 +32,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const watchName = watch('name');
+  const watchName = watch('username');
   const watchEmail = watch('email');
   const watchPassword = watch('password');
   const watchConfirmPassword = watch('confirmPassword');
@@ -40,7 +40,7 @@ const RegisterPage = () => {
 
   const registerHandler: SubmitHandler<FormValues> = (formData) => {
     const {
-      name,
+      username,
       email,
       password,
       selectedTrack,
@@ -49,13 +49,21 @@ const RegisterPage = () => {
       recommend,
     } = formData;
 
-    const newUser = {
-      ...formData,
+    // const newUser = {
+    //   ...formData,
+    //   track: inputs.track,
+    //   isAdmin: inputs.isAdmin,
+    // };
+    const testNewUser = {
+      username,
+      email,
+      password,
+      checkPassword: confirmPassword,
       track: inputs.track,
-      isAdmin: inputs.isAdmin,
     };
 
-    console.log(newUser);
+    console.log(testNewUser);
+    registerFn(testNewUser);
   };
 
   const inputHandler = (e: any) => {
@@ -84,7 +92,7 @@ const RegisterPage = () => {
           aria-label='이름'
           type='text'
           placeholder='name'
-          {...register('name', {
+          {...register('username', {
             required: '이름을 입력하세요',
             pattern: {
               value: /^[가-힣a-zA-Z]*$/,
@@ -92,9 +100,9 @@ const RegisterPage = () => {
             },
           })}
         />
-        {errors.name && (
+        {errors.username && (
           <p className='text-red-500 text-xs text-center'>
-            {errors.name.message}
+            {errors.username.message}
           </p>
         )}
         <Input
@@ -179,7 +187,7 @@ const RegisterPage = () => {
           type='text'
           placeholder='추천인 email'
           {...register('recommend', {
-            required: '이메일을 입력하세요',
+            // required: '이메일을 입력하세요',
             pattern: {
               value: /^\S+@\S+$/i,
               message: '올바른 메일 형식이 아닙니다',
@@ -201,8 +209,7 @@ const RegisterPage = () => {
               !watchEmail ||
               !watchPassword ||
               !watchConfirmPassword ||
-              !inputs.track ||
-              !watchRecommend
+              !inputs.track
             }
           >
             회원가입
