@@ -38,6 +38,10 @@ export default function TeamBuildingPage() {
       id: "3조",
       list: [],
     },
+    임시조: {
+      id: "임시조",
+      list: ["미희", "래준", "대영", "은채"],
+    },
   };
   const [teams, setTeams] = useState(initialTeams);
   console.log(teams);
