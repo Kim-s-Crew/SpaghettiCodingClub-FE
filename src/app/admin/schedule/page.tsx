@@ -2,30 +2,35 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import dayjs from 'dayjs';
-import Swal from 'sweetalert2';
-import { TimeInput } from '@nextui-org/react';
 import Modal from '@/components/ui/Modal';
 import ScheduleInput from '@/components/admin/schedule/ScheduleInput';
+import ScheduleVisualizer from '@/components/admin/schedule/ScheduleVisualizer';
 
-type scheduletype = {
+type scheduleType = {
   content: string;
-  starttime: string;
-  endtime: string;
+  startTime: string;
+  endTime: string;
   scheduleDate: string;
 };
+interface Time {
+  startHour: number;
+  startMinute: number;
+  endHour: number;
+  endMinute: number;
+}
 
 const CalendarPage = () => {
-  const [modalOpen, setmodalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [date, onChange] = useState(new Date());
-  const [schedules, setSchedule] = useState<scheduletype[]>([]);
+  const [schedules, setSchedule] = useState<scheduleType[]>([]);
   const [dayList, setDayList] = useState(['2024-03-26', '2024-03-27']);
   //   const [showSchedule, setShowSchedule] = useState(false);
   console.log(schedules);
   // console.log(dayList);
 
-  let starttimeInput: HTMLInputElement;
-  let endtimeInput: HTMLInputElement;
-  let contentInput: HTMLInputElement;
+  //임시 test 용
+  const [times, setTimes] = useState<Time[]>([]);
+  console.log('시간들 잘 들어오니?', times);
 
   const selectedDate = dayjs(date).format('YYYY년 M월 D일');
 
@@ -50,7 +55,7 @@ const CalendarPage = () => {
         <span
           onClick={() => {
             console.log('hi');
-            setmodalOpen(true);
+            setModalOpen(true);
           }}
           className='days-btn'
         >
@@ -62,8 +67,12 @@ const CalendarPage = () => {
   return (
     <>
       {modalOpen && (
-        <Modal setIsOpen={setmodalOpen}>
-          <ScheduleInput selectedDate={selectedDate} />
+        <Modal setIsOpen={setModalOpen}>
+          <ScheduleInput
+            selectedDate={selectedDate}
+            times={times}
+            setTimes={setTimes}
+          />
         </Modal>
       )}
       <Calendar
@@ -85,36 +94,21 @@ const CalendarPage = () => {
           return (
             <>
               {schedule ? (
-                <>
-                  {/* <h1>일정 날짜: {schedule.scheduleDate}</h1> */}
-                  <div className='flex border-black border-2 w-[800px]'>
-                    <div className='w-[4.17%] bg-white h-[20px]'>0</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>1</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>2</div>
-                    <div className='w-[4.17%] bg-slate-600 h-[20px]'>3</div>
-                    <div className='w-[4.17%] bg-slate-600 h-[20px]'>4</div>
-                    <div className='w-[4.17%] bg-slate-600 h-[20px]'>5</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>6</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>7</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>8</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>9</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>10</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>11</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>12</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>13</div>
-                    <div className='w-[4.17%] bg-white h-[20px]'>14</div>
-                  </div>
+                // <>
+                //   {/* <h1>일정 날짜: {schedule.scheduleDate}</h1> */}
 
-                  <p>시작시간:{schedule.starttime}</p>
+                //   <p>시작시간:{schedule.startTime}</p>
 
-                  <p>끝나는 시간:{schedule.endtime}</p>
-                  <br />
-                  <p>{schedule.content}</p>
-                </>
+                //   <p>끝나는 시간:{schedule.endTime}</p>
+                //   <br />
+                //   <p>{schedule.content}</p>
+                // </>
+                <></>
               ) : null}
             </>
           );
         })}
+        <ScheduleVisualizer schedules={times} />
       </div>
     </>
   );

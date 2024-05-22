@@ -4,9 +4,17 @@ import Swal from 'sweetalert2';
 
 interface Props {
   selectedDate: string;
+  times: any;
+  setTimes: React.Dispatch<React.SetStateAction<Time[]>>;
+}
+interface Time {
+  startHour: number;
+  startMinute: number;
+  endHour: number;
+  endMinute: number;
 }
 
-const ScheduleInput = ({ selectedDate }: Props) => {
+const ScheduleInput = ({ selectedDate, setTimes }: Props) => {
   const [inputs, setInputs] = useState({
     content: '',
     startTime: '',
@@ -21,7 +29,19 @@ const ScheduleInput = ({ selectedDate }: Props) => {
 
       return;
     }
-    return { content, startTime, endTime };
+
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+
+    console.log(content, startHour, startMinute, endHour, endMinute);
+    console.log(content, typeof +startTime, typeof +endTime);
+
+    setTimes((prev) => [
+      ...prev,
+      { startHour, startMinute, endHour, endMinute },
+    ]);
+
+    return { content, startHour, startMinute, endHour, endMinute };
   };
 
   const HandlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +50,7 @@ const ScheduleInput = ({ selectedDate }: Props) => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(inputs);
+  // console.log(inputs);
   return (
     <form className='flex flex-col justify-center' onSubmit={handleSubmit}>
       <h1 className='font-bold text-2xl text-center'>{selectedDate}</h1>
