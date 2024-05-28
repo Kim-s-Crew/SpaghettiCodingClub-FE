@@ -11,6 +11,7 @@ export const loginFn = async (reqData: loginReqData) => {
       // },
     );
     console.log(response);
+    sessionStorage.setItem('token', response.headers.authorization);
     return response.data;
   } catch (err) {
     console.log(err);
