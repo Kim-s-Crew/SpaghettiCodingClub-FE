@@ -7,7 +7,10 @@ const Header = () => {
   return (
     <header className='flex flex-col justify-center items-center bg-slate-400 w-[200px] h-screen p-6'>
       <div className='mb-8'>
-        <Image src={logo} alt='logo' width={200} height={100} />
+        <Link href={'/'}>
+          {' '}
+          <Image src={logo} alt='logo' width={200} height={100} />
+        </Link>
       </div>
       <div className='flex flex-col justify-between items-end flex-1'>
         <ul className='flex flex-col items-center gap-2'>

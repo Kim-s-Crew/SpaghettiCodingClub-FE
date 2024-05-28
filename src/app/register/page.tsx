@@ -5,7 +5,7 @@ import nbcIcon from '@/assets/images/spaghetti_logo.png';
 import { Button, Checkbox, Input, Select, SelectItem } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { registerFn } from '../apis/auth';
+import { registerFn } from '../../apis/auth';
 
 interface FormValues {
   username: string;

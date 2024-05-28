@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { loginFn } from '../apis/auth';
+import { loginFn } from '../../apis/auth';
 
 interface FormValues {
   email: string;
@@ -64,10 +64,10 @@ const LoginPage = () => {
               placeholder='비밀번호를 입력하세요'
               {...register('password', {
                 required: '비밀번호를 입력해주세요',
-                pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
-                  message: '비밀번호는 영문, 숫자 포함 8자 이상 입니다.',
-                },
+                // pattern: {
+                //   value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
+                //   message: '비밀번호는 영문, 숫자 포함 8자 이상 입니다.',
+                // },
               })}
             />
             {errors.password && (
