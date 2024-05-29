@@ -1,34 +1,49 @@
 'use client';
+import { getTracks } from '@/apis/track';
 import useStore from '@/zustand/store';
 import { Select, SelectItem } from '@nextui-org/react';
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+
+interface Track {
+  trackId: number;
+  trackName: string;
+}
 
 const TrackSelector = () => {
-  const dummyTrack = [
-    { trackName: 'React 3기' },
-    { trackName: 'Spring 3기' },
-    { trackName: 'Spring 4기' },
-    { trackName: 'React 4기' },
-    { trackName: 'Spring 5기' },
-  ];
+  const { data, isLoading } = useQuery({
+    queryKey: ['allTracks'],
+    queryFn: getTracks,
+  });
 
   const { setTrack, selectedTrack } = useStore((state) => state);
   // const setTrack = useStore(state=> state.setTrack)
-  console.log('전역변수니?', selectedTrack);
+  // console.log(selectedTrack);
+
+  if (isLoading) {
+    return <p>로딩중...</p>;
+  }
+
+  console.log(data.payload);
 
   return (
     <Select
       placeholder='트랙선택'
       aria-label='track-selector'
       onChange={(e) => {
-        setTrack(e.target.value);
+        console.log('여기', e.target.value);
+        let targetName = e.target.value;
+        const result = data.payload.find(
+          (track: Track) => track.trackName === targetName,
+        );
+        console.log(result);
+
+        setTrack(result);
       }}
-      selectedKeys={[selectedTrack]}
+      selectedKeys={[selectedTrack!.trackName]}
     >
-      {dummyTrack.map((track) => (
-        <SelectItem key={track.trackName} value={track.trackName}>
-          {track.trackName}
-        </SelectItem>
+      {data.payload.map((track: Track) => (
+        <SelectItem key={track.trackName}>{track.trackName}</SelectItem>
       ))}
     </Select>
   );

@@ -3,52 +3,43 @@ import { Button } from '@nextui-org/react';
 import { getStudent } from '@/apis/student';
 import React, { useEffect, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
-// const TempComponent = async () => {
-//   const response = await axios.get(
-//     'https://jsonplaceholder.typicode.com/todos/1',
-//   );
-//   console.log('이거', response);
-
-//   let promise = new Promise((resolve, reject) => {
-//     // 비동기 작업 수행
-//     let success = true; // 예시로 성공 여부를 나타내는 변수
-
-//     if (success) {
-//       resolve('작업이 성공했습니다!'); // 작업이 성공하면 resolve 호출
-//     } else {
-//       reject('작업이 실패했습니다.'); // 작업이 실패하면 reject 호출
-//     }
-//   });
-
-//   console.log(promise);
-
-//   return <div>{response.data.title}</div>;
-// };
+import TrackSelector from '@/components/admin/TrackSelector';
+import useStore from '@/zustand/store';
+import { personData } from '@/types/types';
 
 const Student = () => {
-  // const { data, error } = useQuery({
-  //   queryKey: ['allStudent'],
-  //   queryFn: getStudent,
-  // });
+  const { selectedTrack } = useStore((state) => state);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['allStudent'],
+    queryFn: () => getStudent(selectedTrack!.trackId),
+    enabled: !!selectedTrack,
+    select: (data) => data.payload,
+  });
+  console.log(data);
   // useEffect(() => {
-  //   console.log(data, error);
+  //   console.log(data, isLoading);
   // }, [data, error]);
 
-  // if (error) {
-  //   return <>데이터를 조회 오류</>;
-  // }
+  if (isLoading) {
+    return <>로딩중</>;
+  }
 
-  // console.log(data);
+  // console.log(data.payload);
 
   return (
     <div>
-      <Button onClick={() => getStudent()}>조회</Button>
+      <TrackSelector />
+      <Button onClick={() => refetch()}>조회</Button>
       {/* <Suspense fallback={<h1>로딩중</h1>}>
         <TempComponent />
         <p>{data}</p>
       </Suspense> */}
+      <ul>
+        {data.map((person: personData) => (
+          <li key={person.userId}>{person.userName}</li>
+        ))}
+      </ul>
     </div>
   );
 };

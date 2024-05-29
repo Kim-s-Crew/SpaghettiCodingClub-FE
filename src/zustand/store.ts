@@ -2,21 +2,24 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface Store {
-  selectedTrack: string;
-  setTrack: (arg0: string) => void;
+  selectedTrack: {
+    trackId: number;
+    trackName: string;
+  } | null;
+  setTrack: (track: { trackId: number; trackName: string }) => void;
 }
 
 const useStore = create<Store>()(
   devtools(
     persist(
       (set) => ({
-        selectedTrack: '',
-        setTrack: (track) => set(() => ({ selectedTrack: track })),
+        selectedTrack: { trackId: 99, trackName: 'placeholder track' },
+        setTrack: (track) => set({ selectedTrack: track }),
       }),
       // localStorage key 이름
-      { name: 'selectedTrack' }
-    )
-  )
+      { name: 'selectedTrack' },
+    ),
+  ),
 );
 
 export default useStore;

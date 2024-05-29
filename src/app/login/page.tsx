@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { loginFn } from '../../apis/auth';
+import { login } from '../../apis/auth';
 
 interface FormValues {
   email: string;
@@ -29,7 +29,7 @@ const LoginPage = () => {
   const loginHandler: SubmitHandler<FormValues> = async (formData) => {
     const { email, password } = formData;
     console.log(email, password);
-    loginFn({ email, password });
+    login({ email, password });
     router.push('/');
   };
 

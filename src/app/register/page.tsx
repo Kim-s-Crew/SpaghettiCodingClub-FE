@@ -5,7 +5,7 @@ import nbcIcon from '@/assets/images/spaghetti_logo.png';
 import { Button, Checkbox, Input, Select, SelectItem } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { registerFn } from '../../apis/auth';
+import { registerUser } from '../../apis/auth';
 
 interface FormValues {
   username: string;
@@ -19,7 +19,10 @@ interface FormValues {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const selectItems = [{ value: '스프링 백엔드 엔지니어 양성과정 3회차' }];
+  const selectItems = [
+    { value: '스프링 백엔드 엔지니어 양성과정 3회차' },
+    { value: '프론트엔드 엔지니어 양성과정 3회차' },
+  ];
   const [inputs, setInputs] = useState({
     track: '',
     isAdmin: false,
@@ -49,12 +52,7 @@ const RegisterPage = () => {
       recommend,
     } = formData;
 
-    // const newUser = {
-    //   ...formData,
-    //   track: inputs.track,
-    //   isAdmin: inputs.isAdmin,
-    // };
-    const testNewUser = {
+    const NewUser = {
       username,
       email,
       password,
@@ -62,15 +60,31 @@ const RegisterPage = () => {
       track: inputs.track,
     };
 
-    console.log(testNewUser);
-    registerFn(testNewUser);
+    const NewAdminUser = {
+      username,
+      email,
+      password,
+      checkPassword: confirmPassword,
+      recommendEmail: recommend,
+    };
+
+    console.log(NewUser);
+    if (inputs.isAdmin) {
+      console.log('관리자', inputs.isAdmin);
+      registerUser(NewAdminUser);
+      router.replace('/');
+    } else {
+      console.log('학생', inputs.isAdmin);
+      registerUser(NewUser);
+      router.replace('/');
+    }
   };
 
   const inputHandler = (e: any) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
   const inputCheckHandler = (e: any) => {
-    console.log(e);
+    console.log(inputs.isAdmin);
     setInputs({ ...inputs, [e.target.name]: e.target.checked });
   };
 
@@ -174,7 +188,7 @@ const RegisterPage = () => {
         <div>
           <Checkbox
             id='adminCheck'
-            name='admin'
+            name='isAdmin'
             checked={inputs.isAdmin}
             placeholder='adminCheck'
             onChange={inputCheckHandler}
@@ -200,20 +214,38 @@ const RegisterPage = () => {
           </p>
         )}
         <div>
-          <Button
-            type='submit'
-            color='danger'
-            className='mr-2'
-            isDisabled={
-              !watchName ||
-              !watchEmail ||
-              !watchPassword ||
-              !watchConfirmPassword ||
-              !inputs.track
-            }
-          >
-            회원가입
-          </Button>
+          {inputs.isAdmin ? (
+            <Button
+              type='submit'
+              color='danger'
+              className='mr-2'
+              isDisabled={
+                !watchName ||
+                !watchEmail ||
+                !watchPassword ||
+                !watchConfirmPassword ||
+                !watchRecommend
+              }
+            >
+              회원가입
+            </Button>
+          ) : (
+            <Button
+              type='submit'
+              color='danger'
+              className='mr-2'
+              isDisabled={
+                !watchName ||
+                !watchEmail ||
+                !watchPassword ||
+                !watchConfirmPassword ||
+                !inputs.track
+              }
+            >
+              회원가입
+            </Button>
+          )}
+
           <Button type='button' onClick={cancelRegister}>
             취소
           </Button>
