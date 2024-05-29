@@ -3,7 +3,8 @@ export interface registerReqData {
   password: string;
   checkPassword: string;
   email: string;
-  track: string;
+  track?: string;
+  recommendEmail?: string;
 }
 
 export interface loginReqData {
