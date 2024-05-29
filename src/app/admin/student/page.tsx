@@ -28,10 +28,10 @@ import axios from 'axios';
 // };
 
 const Student = () => {
-  const { data, error } = useQuery({
-    queryKey: ['allStudent'],
-    queryFn: getStudent,
-  });
+  // const { data, error } = useQuery({
+  //   queryKey: ['allStudent'],
+  //   queryFn: getStudent,
+  // });
   // useEffect(() => {
   //   console.log(data, error);
   // }, [data, error]);
@@ -40,11 +40,11 @@ const Student = () => {
   //   return <>데이터를 조회 오류</>;
   // }
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>
-      <Button>조회</Button>
+      <Button onClick={() => getStudent()}>조회</Button>
       {/* <Suspense fallback={<h1>로딩중</h1>}>
         <TempComponent />
         <p>{data}</p>

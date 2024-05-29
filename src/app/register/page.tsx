@@ -19,7 +19,7 @@ interface FormValues {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const selectItems = [{ value: 'react 3rd' }, { value: 'vue 3rd' }];
+  const selectItems = [{ value: '스프링 백엔드 엔지니어 양성과정 3회차' }];
   const [inputs, setInputs] = useState({
     track: '',
     isAdmin: false,
