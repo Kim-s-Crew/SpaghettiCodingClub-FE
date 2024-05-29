@@ -30,6 +30,7 @@ const LoginPage = () => {
     const { email, password } = formData;
     console.log(email, password);
     loginFn({ email, password });
+    router.push('/');
   };
 
   return (

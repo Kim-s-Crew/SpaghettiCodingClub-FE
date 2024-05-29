@@ -5,12 +5,10 @@ export const loginFn = async (reqData: loginReqData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auths/login`,
-      JSON.stringify(reqData),
-      // {
-      //   timeout: 5000,
-      // },
+      reqData,
     );
     console.log(response);
+    sessionStorage.setItem('token', response.headers.authorization);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -22,10 +20,12 @@ export const registerFn = async (reqData: registerReqData) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auths/signup`,
-      JSON.stringify(reqData),
-      // {
-      //   timeout: 5000,
-      // },
+      reqData,
+      {
+        headers: {
+          'Content-Type': 'application/json', // Add Content-Type header
+        },
+      },
     );
     console.log(response);
     return response.data;
