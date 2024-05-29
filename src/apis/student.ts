@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const getStudent = async () => {
+export const getStudent = async (trackId: number) => {
   const token = sessionStorage.getItem('token');
   console.log(token);
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/trackParticipants/1`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/trackParticipants/${trackId}`,
       {
         headers: {
           Authorization: `${token}`,

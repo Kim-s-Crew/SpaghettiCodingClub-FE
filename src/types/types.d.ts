@@ -11,3 +11,10 @@ export interface loginReqData {
   password: string;
   email: string;
 }
+export interface personData {
+  userId: number;
+  userName: string;
+  trackId: number;
+  trackName: string;
+  joinedAt: string;
+}

@@ -13,7 +13,7 @@ const useStore = create<Store>()(
   devtools(
     persist(
       (set) => ({
-        selectedTrack: null,
+        selectedTrack: { trackId: 99, trackName: 'placeholder track' },
         setTrack: (track) => set({ selectedTrack: track }),
       }),
       // localStorage key 이름
