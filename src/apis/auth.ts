@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { registerReqData, loginReqData } from '@/types/types';
 
+// 로그인
 export const login = async (reqData: loginReqData) => {
   try {
     const response = await axios.post(
@@ -15,6 +16,7 @@ export const login = async (reqData: loginReqData) => {
   }
 };
 
+// 회원가입
 export const registerUser = async (reqData: registerReqData) => {
   console.log('회원가입 펑션 호출됨');
   try {

@@ -1,12 +1,28 @@
-import React from 'react';
+'use client';
 
 import { Button, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
-// import { useRouter } from 'next/navigation';
+
 import Link from 'next/link';
+import useStore from '@/zustand/store';
+import { useQuery } from '@tanstack/react-query';
+import { getTrackNotices } from '@/apis/trackNotice';
+import { noticeData } from '@/types/types';
 
 const Notice = () => {
-  // const router = useRouter();
+  const { selectedTrack } = useStore((state) => state);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['trackNotices'],
+    queryFn: () => getTrackNotices(selectedTrack!.trackId),
+    enabled: !!selectedTrack,
+    select: (data) => data.payload,
+  });
+  console.log(data);
+
+  if (isLoading) {
+    return <>로딩중</>;
+  }
+
   const dummyNotice = [
     {
       title: '중요한 공지',
@@ -38,21 +54,24 @@ const Notice = () => {
   return (
     <div>
       <TrackSelector />
-      {dummyNotice.map((notice) => {
-        return (
-          <div className='flex justify-between w-[1000px]' key={notice.title}>
-            <div>{notice.title}</div>
-            <div>{notice.time}</div>
-          </div>
-        );
-      })}
+      <Button onClick={() => refetch()}>조회</Button>
+      <ul>
+        {data.map((notice: noticeData) => {
+          return (
+            <li
+              className='flex justify-between w-[1000px]'
+              key={notice.noticeId}
+            >
+              <Link href={`/admin/notice/${notice.noticeId}`}>
+                {notice.trackNoticeTitle}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+
       <Link href={'/admin/notice/write'}>
-        <Button
-          color='warning'
-          // onClick={() => router.push('/admin/notice/write')}
-        >
-          글쓰기
-        </Button>
+        <Button color='warning'>글쓰기</Button>
       </Link>
     </div>
   );

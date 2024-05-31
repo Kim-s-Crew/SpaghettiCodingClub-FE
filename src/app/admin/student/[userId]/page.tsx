@@ -9,7 +9,9 @@ const UserId = () => {
       <h2 className='text-2xl font-bold mb-4'>김미희</h2>
       <StudentInfo />
       <Divider className='my-6' />
-      <StudentComment title={'학습'} />
+      <StudentComment
+        title={'학습 (코멘트 남기실 때 날짜를 간략하게 적어주세요(5/24))'}
+      />
       <Divider className='my-6' />
       <StudentComment title={'배경'} />
       <Divider className='my-6' />

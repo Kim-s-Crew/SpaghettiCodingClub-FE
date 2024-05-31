@@ -44,7 +44,7 @@ const CalendarPage = () => {
       contents.push(
         <>
           <div className='w-[20px] h-[20px] bg-yellow-300 rounded-full'>*</div>
-        </>
+        </>,
       );
     }
 
@@ -66,7 +66,7 @@ const CalendarPage = () => {
   return (
     <>
       {modalOpen && (
-        <Modal setIsOpen={setModalOpen}>
+        <Modal setIsOpen={setModalOpen} title={'일정추가'}>
           <ScheduleInput
             selectedDate={selectedDate}
             times={times}
