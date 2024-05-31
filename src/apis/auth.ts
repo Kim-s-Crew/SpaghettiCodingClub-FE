@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { registerReqData, loginReqData } from '@/types/types';
 
+const token = sessionStorage.getItem('token');
+
 // 로그인
 export const login = async (reqData: loginReqData) => {
   try {
@@ -26,6 +28,25 @@ export const registerUser = async (reqData: registerReqData) => {
       {
         headers: {
           'Content-Type': 'application/json', // Add Content-Type header
+        },
+      },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 유저 정보 조회
+export const getUserData = async (uid: number) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${uid}`,
+
+      {
+        headers: {
+          Authorization: `${token}`,
         },
       },
     );
