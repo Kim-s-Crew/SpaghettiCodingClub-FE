@@ -46,3 +46,11 @@ export interface deleteNoticeData {
   trackId: number;
   noticeId: number;
 }
+
+// 평가
+export interface assessmentData {
+  background?: string;
+  guidance?: string;
+  relationship?: string;
+  userId?: number;
+}
