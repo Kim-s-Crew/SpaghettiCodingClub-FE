@@ -3,10 +3,11 @@ import React from 'react';
 
 interface Props {
   children: React.ReactNode;
+  title: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ children, setIsOpen }: Props) => {
+const Modal = ({ children, title, setIsOpen }: Props) => {
   const modalCloser = () => {
     setIsOpen(false);
   };
@@ -17,6 +18,7 @@ const Modal = ({ children, setIsOpen }: Props) => {
       <div
         className={`z-20 bg-white rounded-md flex flex-col justify-center items-center p-10 relative`}
       >
+        <h1 className='text-2xl font-bold mb-4'>{title}</h1>
         {children}
         <span
           className='absolute top-3 right-3 cursor-pointer'

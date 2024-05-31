@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const token = sessionStorage.getItem('token');
+
+// 모든 트랙 가져오기(selector)
 export const getTracks = async () => {
-  const token = sessionStorage.getItem('token');
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks`,
@@ -17,3 +19,41 @@ export const getTracks = async () => {
     console.log(err);
   }
 };
+
+// 새 트랙 생성
+export const createTrack = async (reqData: string) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks`,
+      reqData,
+      {
+        headers: {
+          'Content-Type': 'application/json', // Add Content-Type header
+          Authorization: `${token}`,
+        },
+      },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 트랙 삭제 - 아직 api 없음
+// export const deleteTracks = async (trackId: number) => {
+//   try {
+//     const response = await axios.delete(
+//       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/tracks/${trackId}`,
+//       {
+//         headers: {
+//           Authorization: `${token}`,
+//         },
+//       },
+//     );
+//     console.log(response);
+//     return response.data;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };

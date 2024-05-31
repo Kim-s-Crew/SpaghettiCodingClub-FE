@@ -1,19 +1,38 @@
 'use client';
+import { createTrackNotice } from '@/apis/trackNotice';
 import TrackSelector from '@/components/admin/TrackSelector';
+import useStore from '@/zustand/store';
 import { Input, Spacer, Textarea, Button, Divider } from '@nextui-org/react';
+import {
+  InvalidateQueryFilters,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface Notice {
-  title: string;
-  content: string;
+  trackNoticeTitle: string;
+  trackNoticeContent: string;
 }
 
 const NoticeWritePage = () => {
+  const queryClient = useQueryClient();
+  const { selectedTrack } = useStore((state) => state);
   const router = useRouter();
   const [notice, setNotice] = useState<Notice>({
-    title: '',
-    content: '',
+    trackNoticeTitle: '',
+    trackNoticeContent: '',
+  });
+
+  const { mutate: newNoticeMutation } = useMutation({
+    mutationFn: createTrackNotice,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([
+        'trackNotice',
+      ] as InvalidateQueryFilters);
+      router.replace('/admin/notice');
+    },
   });
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +41,7 @@ const NoticeWritePage = () => {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(notice);
+    newNoticeMutation({ trackId: selectedTrack!.trackId, reqData: notice });
   };
 
   const cancelHandler = () => {
@@ -41,25 +60,25 @@ const NoticeWritePage = () => {
         <div>
           <Input
             type='text'
-            name='title'
+            name='trackNoticeTitle'
             label='Title'
             aria-label='Title'
             placeholder='제목을 입력하세요'
             labelPlacement='outside'
             onChange={changeHandler}
-            value={notice?.title}
+            value={notice?.trackNoticeTitle}
           />
         </div>
 
         <Spacer y={4} />
         <Textarea
-          name='content'
+          name='trackNoticeContent'
           label='Content'
           aria-label='Content'
           placeholder='내용을 입력하세요'
           minRows={10}
           labelPlacement='outside'
-          value={notice?.content}
+          value={notice?.trackNoticeContent}
           onChange={changeHandler}
         />
 

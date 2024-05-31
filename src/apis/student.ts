@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const getStudent = async (trackId: number) => {
+// 트랙 참여자 전체 조회
+export const getStudents = async (trackId: number) => {
   const token = sessionStorage.getItem('token');
   console.log(token);
   try {

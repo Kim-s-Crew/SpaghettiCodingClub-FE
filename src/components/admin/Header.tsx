@@ -24,10 +24,10 @@ const Header = () => {
             <Link href={'/admin/student/userId'}>수강생 상세</Link>
           </li>
           <li>
-            <Link href={'/admin/student/userId'}>트랙 관리</Link>
+            <Link href={'/admin/track'}>트랙 관리</Link>
           </li>
           <li>
-            <Link href={'/admin/track'}>주차 관리</Link>
+            <Link href={'/admin/trackweek'}>주차 관리</Link>
           </li>
           <li>
             <Link href={'/admin/notice'}>공지사항 관리</Link>

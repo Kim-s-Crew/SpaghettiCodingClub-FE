@@ -11,6 +11,8 @@ import Modal from '@/components/ui/Modal';
 import PlusButton from '@/components/ui/PlusButton';
 import StudentInfo from '@/components/admin/student/StudentInfo';
 import Team from '@/components/admin/teambuilding/Team';
+import { Button } from '@nextui-org/react';
+import TrackSelector from '@/components/admin/TrackSelector';
 
 type TItemStatus = 'todo' | 'doing';
 
@@ -118,12 +120,18 @@ export default function TeamBuildingPage() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className='grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2'>
-        {Object.values(teams).map((team) => (
-          <Team col={team} key={team.id} />
-        ))}
-      </div>
-    </DragDropContext>
+    <>
+      <TrackSelector />
+      <Button>조회</Button>
+      <Button>팀추가</Button>
+      <Button>저장</Button>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className='grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2'>
+          {Object.values(teams).map((team) => (
+            <Team col={team} key={team.id} />
+          ))}
+        </div>
+      </DragDropContext>
+    </>
   );
 }
