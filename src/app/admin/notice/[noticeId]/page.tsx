@@ -1,13 +1,9 @@
 'use client';
 
-import {
-  deleteTrackNotice,
-  getTrackNotice,
-  updateTrackNotice,
-} from '@/apis/trackNotice';
+import { deleteTrackNotice, getTrackNotice } from '@/apis/trackNotice';
 import NoticeEdit from '@/components/admin/notice/NoticeEdit';
 import useStore from '@/zustand/store';
-import { Button, Input, Spacer, Textarea } from '@nextui-org/react';
+import { Button, Spacer } from '@nextui-org/react';
 import {
   InvalidateQueryFilters,
   useMutation,
