@@ -54,3 +54,9 @@ export interface assessmentData {
   relationship?: string;
   userId?: number;
 }
+
+// track수정 data
+export interface trackUpdateData {
+  trackId: number;
+  reqData: string;
+}

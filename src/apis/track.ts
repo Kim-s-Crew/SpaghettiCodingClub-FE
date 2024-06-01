@@ -1,3 +1,4 @@
+import { trackUpdateData } from '@/types/types';
 import axios from 'axios';
 
 const token = sessionStorage.getItem('token');
@@ -57,3 +58,23 @@ export const createTrack = async (reqData: string) => {
 //     console.log(err);
 //   }
 // };
+
+// 트랙 수정
+export const updateTrack = async ({ trackId, reqData }: trackUpdateData) => {
+  try {
+    const response = await axios.put(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}`,
+      { trackName: reqData },
+      {
+        headers: {
+          'Content-Type': 'application/json', // Add Content-Type header
+          Authorization: `${token}`,
+        },
+      },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

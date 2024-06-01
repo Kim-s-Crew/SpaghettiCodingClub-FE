@@ -71,10 +71,6 @@ const UserId = () => {
 
   //추후 BE 에서 assessments 배열 한꺼풀 벗겨 주기로 합의됨.
 
-  if (!assessments) {
-    return <p>여기다 리턴하면 아무고또 안생김</p>;
-  }
-
   return (
     <div>
       <h2 className='text-2xl font-bold mb-4'>{username}</h2>
