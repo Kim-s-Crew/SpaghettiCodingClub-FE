@@ -62,7 +62,7 @@ const NoticeEdit = ({ notice, editDispatch }: NoticeEditProps) => {
         }}
       />
       <Spacer y={5} />
-      <Button onClick={editHandler} style={{ marginLeft: 'auto' }}>
+      <Button onClick={editHandler} className='ml-auto'>
         수정 완료
       </Button>
     </div>
