@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { deleteNoticeData, newNoticeData } from '@/types/types';
+import {
+  deleteNoticeData,
+  newNoticeData,
+  noticeUpdateData,
+} from '@/types/types';
 
 const token = sessionStorage.getItem('token');
 
@@ -77,6 +81,31 @@ export const deleteTrackNotice = async ({
 
       {
         headers: {
+          Authorization: `${token}`,
+        },
+      },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 공지 수정
+export const updateTrackNotice = async ({
+  trackId,
+  noticeId,
+  noticeTitle,
+  noticeContent,
+}: noticeUpdateData) => {
+  try {
+    const response = await axios.put(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}/notices/${noticeId}`,
+      { trackNoticeTitle: noticeTitle, trackNoticeContent: noticeContent },
+      {
+        headers: {
+          'Content-Type': 'application/json',
           Authorization: `${token}`,
         },
       },

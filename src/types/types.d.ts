@@ -60,3 +60,20 @@ export interface trackUpdateData {
   trackId: number;
   reqData: string;
 }
+
+// 공지 type
+export interface noticeData {
+  noticeId: number;
+  trackId: string;
+  trackNoticeContent: string;
+  trackNoticeTitle: string;
+  userId: number;
+}
+
+// 공지 수정 params
+export interface noticeUpdateData {
+  trackId: number;
+  noticeId: number;
+  noticeTitle: string;
+  noticeContent: string;
+}
