@@ -49,3 +49,22 @@ export const createAssessment = async (reqBody: assessmentData) => {
     console.log(err);
   }
 };
+
+//평가 삭제
+export const deleteAssessment = async (assessmentId: number | undefined) => {
+  console.log('삭제함수 실행됨');
+  try {
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/assessmentItems/${assessmentId}`,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
