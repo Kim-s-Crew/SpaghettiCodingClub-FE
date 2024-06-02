@@ -1,13 +1,21 @@
 'use client';
+import { deleteAssessment } from '@/apis/assesment';
 import { getUserData } from '@/apis/auth';
 import StudentComment from '@/components/admin/student/StudentComment';
 import StudentInfo from '@/components/admin/student/StudentInfo';
 
-import { Button, Divider } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
+import { Button, Divider, button } from '@nextui-org/react';
+import {
+  InvalidateQueryFilters,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const UserId = () => {
+  const queryClient = useQueryClient();
   const param = useParams();
   const { userId } = param;
   console.log(param);
@@ -18,6 +26,35 @@ const UserId = () => {
     select: (data) => data.payload,
     enabled: !!userId,
   });
+
+  const { mutate: removeAssessmentMutation } = useMutation({
+    mutationFn: deleteAssessment,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([
+        'trackNotice',
+      ] as InvalidateQueryFilters);
+    },
+  });
+
+  const deleteAssessmentHandler = async (assessmentId: number) => {
+    Swal.fire({
+      text: '학습/배경/관계 모든 내용이 삭제됩니다. 이 작업은 되돌릴 수 없습니다',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#F31260',
+      confirmButtonText: '삭제',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeAssessmentMutation(assessmentId);
+
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your file has been deleted.',
+          icon: 'success',
+        });
+      }
+    });
+  };
 
   console.log(data);
 
@@ -34,10 +71,6 @@ const UserId = () => {
 
   //추후 BE 에서 assessments 배열 한꺼풀 벗겨 주기로 합의됨.
 
-  if (!assessments) {
-    return <p>여기다 리턴하면 아무고또 안생김</p>;
-  }
-
   return (
     <div>
       <h2 className='text-2xl font-bold mb-4'>{username}</h2>
@@ -45,6 +78,16 @@ const UserId = () => {
       <Divider className='my-6' />
       {assessments[0] ? (
         <>
+          <div className='flex justify-end'>
+            <Button
+              size='sm'
+              onClick={() =>
+                deleteAssessmentHandler(assessments[0].assessmentId)
+              }
+            >
+              로그삭제
+            </Button>
+          </div>
           <StudentComment
             title={'학습'}
             assessmentId={assessments[0].assessmentId}
