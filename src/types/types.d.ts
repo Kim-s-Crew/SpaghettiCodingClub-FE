@@ -77,3 +77,9 @@ export interface noticeUpdateData {
   noticeTitle: string;
   noticeContent: string;
 }
+// student 트랙 변경 params
+export interface changeTrackData {
+  userId: number;
+  oldTrackId: number;
+  newTrackId: number;
+}

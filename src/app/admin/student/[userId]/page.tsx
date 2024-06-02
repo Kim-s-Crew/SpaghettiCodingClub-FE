@@ -21,7 +21,6 @@ const UserId = () => {
   const param = useParams();
   const [modalOpen, setModalOpen] = useState(false);
   const { userId } = param;
-  console.log(param);
 
   const { data, isLoading } = useQuery({
     queryKey: ['userData'],
@@ -92,13 +91,7 @@ const UserId = () => {
       {assessments[0] ? (
         <>
           <div className='flex justify-end'>
-            <Button
-              size='sm'
-              onClick={() =>
-                // deleteAssessmentHandler(assessments[0].assessmentId)
-                setModalOpen(true)
-              }
-            >
+            <Button size='sm' onClick={() => setModalOpen(true)}>
               로그삭제
             </Button>
           </div>
