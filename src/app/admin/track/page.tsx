@@ -13,12 +13,14 @@ import { createTrack, getTracks, updateTrack } from '@/apis/track';
 import { tracksInfo } from '@/types/types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Modal from '@/components/ui/Modal';
-import Swal from 'sweetalert2';
 
 const TrackManage = () => {
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
   const [trackTitle, setTrackTitle] = useState('');
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [editTrackId, setEditTrackId] = useState<number | null>(null);
+
   const { data, isLoading } = useQuery({
     queryKey: ['track'],
     queryFn: getTracks,
@@ -45,27 +47,30 @@ const TrackManage = () => {
     },
   });
 
-  const trackEditHandler = (trackId: number) => {
-    Swal.fire({
-      title: '트랙명 수정',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off',
-      },
-      showCancelButton: true,
-      confirmButtonText: '수정',
-      showLoaderOnConfirm: true,
-      preConfirm: async (trackName) => {
-        await editTrack({ trackId, reqData: trackName });
-      },
-    });
+  const trackEditHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (editTrackId !== null) {
+      editTrack({ trackId: editTrackId, reqData: trackTitle });
+    }
+    setModalOpen(false);
   };
 
   if (isLoading) {
     return <>로딩중</>;
   }
 
-  const openModal = () => {
+  const openModal = (
+    mode: 'create' | 'edit',
+    trackId?: number,
+    trackName?: string,
+  ) => {
+    setModalMode(mode);
+    if (mode === 'edit' && trackId && trackName) {
+      setEditTrackId(trackId);
+      setTrackTitle(trackName);
+    } else {
+      setTrackTitle('');
+    }
     setModalOpen(true);
   };
 
@@ -82,8 +87,13 @@ const TrackManage = () => {
   return (
     <div>
       {modalOpen && (
-        <Modal setIsOpen={setModalOpen} title={'트랙생성'}>
-          <form onSubmit={submitHandler}>
+        <Modal
+          setIsOpen={setModalOpen}
+          title={modalMode === 'create' ? '트랙생성' : '트랙수정'}
+        >
+          <form
+            onSubmit={modalMode === 'create' ? submitHandler : trackEditHandler}
+          >
             <input
               type='text'
               placeholder='트랙명을 입력하세요'
@@ -105,7 +115,9 @@ const TrackManage = () => {
               <div>{track.trackName}</div>
               <span
                 className='cursor-pointer'
-                onClick={() => trackEditHandler(track.trackId)}
+                onClick={() =>
+                  openModal('edit', track.trackId, track.trackName)
+                }
               >
                 ✏️
               </span>
@@ -113,7 +125,7 @@ const TrackManage = () => {
           );
         })}
         <Spacer y={10} />
-        <PlusButton onClick={openModal} />
+        <PlusButton onClick={() => openModal('create')} />
       </div>
     </div>
   );
