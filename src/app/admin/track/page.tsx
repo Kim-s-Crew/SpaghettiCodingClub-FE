@@ -9,11 +9,10 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { createTrack, getTracks, updateTrack } from '@/apis/track';
+import { createTrack, getTracks } from '@/apis/track';
 import { tracksInfo } from '@/types/types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Modal from '@/components/ui/Modal';
-import Swal from 'sweetalert2';
 
 const TrackManage = () => {
   const queryClient = useQueryClient();
@@ -34,32 +33,6 @@ const TrackManage = () => {
       ] as InvalidateQueryFilters);
     },
   });
-
-  const { mutate: editTrack } = useMutation({
-    mutationFn: updateTrack,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries([
-        'track',
-        trackTitle,
-      ] as InvalidateQueryFilters);
-    },
-  });
-
-  const trackEditHandler = (trackId: number) => {
-    Swal.fire({
-      title: '트랙명 수정',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off',
-      },
-      showCancelButton: true,
-      confirmButtonText: '수정',
-      showLoaderOnConfirm: true,
-      preConfirm: async (trackName) => {
-        await editTrack({ trackId, reqData: trackName });
-      },
-    });
-  };
 
   if (isLoading) {
     return <>로딩중</>;
@@ -105,7 +78,7 @@ const TrackManage = () => {
               <div>{track.trackName}</div>
               <span
                 className='cursor-pointer'
-                onClick={() => trackEditHandler(track.trackId)}
+                onClick={() => setModalOpen(true)}
               >
                 ✏️
               </span>

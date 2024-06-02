@@ -3,8 +3,9 @@ import { deleteAssessment } from '@/apis/assesment';
 import { getUserData } from '@/apis/auth';
 import StudentComment from '@/components/admin/student/StudentComment';
 import StudentInfo from '@/components/admin/student/StudentInfo';
+import Modal from '@/components/ui/Modal';
 
-import { Button, Divider, button } from '@nextui-org/react';
+import { Button, Divider, Spacer } from '@nextui-org/react';
 import {
   InvalidateQueryFilters,
   useMutation,
@@ -12,11 +13,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const UserId = () => {
   const queryClient = useQueryClient();
   const param = useParams();
+  const [modalOpen, setModalOpen] = useState(false);
   const { userId } = param;
   console.log(param);
 
@@ -37,23 +40,9 @@ const UserId = () => {
   });
 
   const deleteAssessmentHandler = async (assessmentId: number) => {
-    Swal.fire({
-      text: '학습/배경/관계 모든 내용이 삭제됩니다. 이 작업은 되돌릴 수 없습니다',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#F31260',
-      confirmButtonText: '삭제',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        removeAssessmentMutation(assessmentId);
-
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'Your file has been deleted.',
-          icon: 'success',
-        });
-      }
-    });
+    removeAssessmentMutation(assessmentId);
+    setModalOpen(false);
+    toast.success('로그가 삭제되었습니다.');
   };
 
   console.log(data);
@@ -73,6 +62,30 @@ const UserId = () => {
 
   return (
     <div>
+      {modalOpen && (
+        <Modal title='로그삭제' setIsOpen={setModalOpen}>
+          <p>학습/배경/관계 모든 로그가 삭제됩니다.</p>
+          <p> 이 작업은 돌이킬 수 없습니다.</p>
+          <Spacer y={2} />
+          <div className='flex gap-2'>
+            <Button
+              color='danger'
+              onClick={() =>
+                deleteAssessmentHandler(assessments[0].assessmentId)
+              }
+            >
+              삭제
+            </Button>
+            <Button
+              onClick={() => {
+                setModalOpen(false);
+              }}
+            >
+              취소
+            </Button>
+          </div>
+        </Modal>
+      )}
       <h2 className='text-2xl font-bold mb-4'>{username}</h2>
       <StudentInfo trackName={trackName} trackWeeks={trackWeeks} />
       <Divider className='my-6' />
@@ -82,7 +95,8 @@ const UserId = () => {
             <Button
               size='sm'
               onClick={() =>
-                deleteAssessmentHandler(assessments[0].assessmentId)
+                // deleteAssessmentHandler(assessments[0].assessmentId)
+                setModalOpen(true)
               }
             >
               로그삭제
