@@ -17,9 +17,9 @@ import Modal from '@/components/ui/Modal';
 const TrackManage = () => {
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [trackTitle, setTrackTitle] = useState('');
   const [searchTrackName, setSearchTrackName] = useState('');
-  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [editTrackId, setEditTrackId] = useState<number | null>(null);
 
   const { data, isLoading } = useQuery({

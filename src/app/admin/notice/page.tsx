@@ -12,7 +12,7 @@ import { noticeData } from '@/types/types';
 const Notice = () => {
   const { selectedTrack } = useStore((state) => state);
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['trackNotices'],
+    queryKey: ['trackNotices', selectedTrack!.trackId],
     queryFn: () => getTrackNotices(selectedTrack!.trackId),
     enabled: !!selectedTrack,
     select: (data) => data.payload,
@@ -27,7 +27,7 @@ const Notice = () => {
     <div>
       <div className='flex gap-2'>
         <TrackSelector />
-        <Button onClick={() => refetch()}>조회</Button>
+        {/* <Button onClick={() => refetch()}>조회</Button> */}
       </div>
       <Spacer y={2} />
       <ul>
