@@ -54,10 +54,10 @@ const UserId = () => {
     return <p>데이터가 없습니다.</p>;
   }
 
-  const { trackName, email, role, trackWeeks, username, assessments } = data;
-  // console.log('평가', assessments[0]);
+  const { trackName, email, role, trackWeeks, username, assessment } = data;
+  // console.log('평가', assessment[0]);
 
-  //추후 BE 에서 assessments 배열 한꺼풀 벗겨 주기로 합의됨.
+  //추후 BE 에서 assessment 배열 한꺼풀 벗겨 주기로 합의됨.
 
   return (
     <div>
@@ -69,9 +69,7 @@ const UserId = () => {
           <div className='flex gap-2'>
             <Button
               color='danger'
-              onClick={() =>
-                deleteAssessmentHandler(assessments[0].assessmentId)
-              }
+              onClick={() => deleteAssessmentHandler(assessment.assessmentId)}
             >
               삭제
             </Button>
@@ -88,7 +86,7 @@ const UserId = () => {
       <h2 className='text-2xl font-bold mb-4'>{username}</h2>
       <StudentInfo trackName={trackName} trackWeeks={trackWeeks} />
       <Divider className='my-6' />
-      {assessments[0] ? (
+      {assessment ? (
         <>
           <div className='flex justify-end'>
             <Button size='sm' onClick={() => setModalOpen(true)}>
@@ -97,20 +95,20 @@ const UserId = () => {
           </div>
           <StudentComment
             title={'학습'}
-            assessmentId={assessments[0].assessmentId}
-            content={assessments[0].guidance}
+            assessmentId={assessment.assessmentId}
+            content={assessment.guidance || ''}
           />
           <Divider className='my-6' />
           <StudentComment
             title={'배경'}
-            assessmentId={assessments[0].assessmentId}
-            content={assessments[0].background}
+            assessmentId={assessment.assessmentId}
+            content={assessment.background || ''}
           />
           <Divider className='my-6' />
           <StudentComment
             title={'관계'}
-            assessmentId={assessments[0].assessmentId}
-            content={assessments[0].relationship}
+            assessmentId={assessment.assessmentId}
+            content={assessment.relationship || ''}
           />
         </>
       ) : (

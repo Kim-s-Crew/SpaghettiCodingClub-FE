@@ -17,8 +17,9 @@ import Modal from '@/components/ui/Modal';
 const TrackManage = () => {
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
-  const [trackTitle, setTrackTitle] = useState('');
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [trackTitle, setTrackTitle] = useState('');
+  const [searchTrackName, setSearchTrackName] = useState('');
   const [editTrackId, setEditTrackId] = useState<number | null>(null);
 
   const { data, isLoading } = useQuery({
@@ -105,25 +106,37 @@ const TrackManage = () => {
         </Modal>
       )}
       <form className='flex'>
-        <Input type='text' placeholder='트랙명 검색' />
-        <Button color='danger'>검색</Button>
+        <Input
+          type='text'
+          placeholder='트랙명 검색'
+          value={searchTrackName}
+          onChange={(e) => setSearchTrackName(e.target.value)}
+        />
+        {/* <Button color='danger'>검색</Button> */}
       </form>
+      <Spacer y={2} />
       <div>
-        {data.map((track: tracksInfo) => {
-          return (
-            <div className='flex' key={track.trackId}>
-              <div>{track.trackName}</div>
-              <span
-                className='cursor-pointer'
-                onClick={() =>
-                  openModal('edit', track.trackId, track.trackName)
-                }
-              >
-                ✏️
-              </span>
-            </div>
-          );
-        })}
+        {data
+          .filter((track: tracksInfo) =>
+            track.trackName
+              .toLowerCase()
+              .includes(searchTrackName.toLowerCase()),
+          )
+          .map((track: tracksInfo) => {
+            return (
+              <div className='flex' key={track.trackId}>
+                <div>{track.trackName}</div>
+                <span
+                  className='cursor-pointer'
+                  onClick={() =>
+                    openModal('edit', track.trackId, track.trackName)
+                  }
+                >
+                  ✏️
+                </span>
+              </div>
+            );
+          })}
         <Spacer y={10} />
         <PlusButton onClick={() => openModal('create')} />
       </div>

@@ -1,7 +1,7 @@
 'use client';
-import { Button } from '@nextui-org/react';
+import { Button, Spacer } from '@nextui-org/react';
 import { getStudents } from '@/apis/student';
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect, Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import TrackSelector from '@/components/admin/TrackSelector';
@@ -11,8 +11,9 @@ import Link from 'next/link';
 
 const Student = () => {
   const { selectedTrack } = useStore((state) => state);
+  const [searchStudent, setSearchStudent] = useState('');
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['allStudent'],
+    queryKey: ['allStudent', selectedTrack!.trackId],
     queryFn: () => getStudents(selectedTrack!.trackId),
     enabled: !!selectedTrack,
     select: (data) => data.payload,
@@ -27,16 +28,31 @@ const Student = () => {
 
   return (
     <div>
-      <TrackSelector />
-      <Button onClick={() => refetch()}>조회</Button>
+      <div className='flex gap-2'>
+        <TrackSelector />
+        {/* <Button onClick={() => refetch()}>조회</Button> */}
+      </div>
+      <Spacer y={2} />
+      <input
+        type='text'
+        placeholder='수강생 검색'
+        value={searchStudent}
+        onChange={(e) => setSearchStudent(e.target.value)}
+        className='w-full'
+      />
+      <Spacer y={2} />
       <ul>
-        {data.map((person: personData) => (
-          <li key={person.userId}>
-            <Link href={`/admin/student/${person.userId}`}>
-              {person.userName}
-            </Link>
-          </li>
-        ))}
+        {data
+          .filter((person: personData) =>
+            person.userName.toLowerCase().includes(searchStudent.toLowerCase()),
+          )
+          .map((person: personData) => (
+            <li key={person.userId}>
+              <Link href={`/admin/student/${person.userId}`}>
+                {person.userName}
+              </Link>
+            </li>
+          ))}
       </ul>
     </div>
   );

@@ -13,7 +13,6 @@ export interface loginReqData {
 }
 
 // 트랙
-
 export interface tracksInfo {
   trackId: number;
   trackName: string;
@@ -45,6 +44,22 @@ export interface newNoticeData {
 export interface deleteNoticeData {
   trackId: number;
   noticeId: number;
+}
+
+// 트랙주차
+
+export interface tracksWeekInfo {
+  trackWeekId: number;
+  weekName: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface newTrackWeekData {
+  trackId: number;
+  weekName: string;
+  startDate: string;
+  endDate: string;
 }
 
 // 평가
