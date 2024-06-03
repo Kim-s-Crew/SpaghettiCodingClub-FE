@@ -98,3 +98,10 @@ export interface changeTrackData {
   oldTrackId: number;
   newTrackId: number;
 }
+
+// 일정 생성 params
+export interface createScheduleData {
+  title: string;
+  startTime: string;
+  endTime: string;
+}
