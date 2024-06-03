@@ -8,6 +8,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 type Props = {
   title: string;
@@ -30,6 +31,11 @@ const StudentComment = ({ title, content, assessmentId }: Props) => {
       await queryClient.invalidateQueries([
         'userData',
       ] as InvalidateQueryFilters);
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
     },
   });
   const { mutate: postAssessmentMutation } = useMutation({

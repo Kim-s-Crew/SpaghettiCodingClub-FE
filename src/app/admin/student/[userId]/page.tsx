@@ -36,6 +36,11 @@ const UserId = () => {
         'trackNotice',
       ] as InvalidateQueryFilters);
     },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
+    },
   });
 
   const deleteAssessmentHandler = async (assessmentId: number) => {

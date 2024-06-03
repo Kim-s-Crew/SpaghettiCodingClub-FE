@@ -9,6 +9,7 @@ import {
 import { changeTrack } from '@/apis/student';
 import { useParams } from 'next/navigation';
 import useStore from '@/zustand/store';
+import { toast } from 'react-toastify';
 
 interface Props {
   trackName: string;
@@ -28,6 +29,11 @@ const StudentInfo = ({ trackName, trackWeeks }: Props) => {
       await queryClient.invalidateQueries([
         'userData',
       ] as InvalidateQueryFilters);
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
     },
   });
 

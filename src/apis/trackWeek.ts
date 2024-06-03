@@ -17,6 +17,7 @@ interface updateTrackWeekProps {
 // 모든 주차 가져오기
 export const getTrackWeeks = async (trackId: number) => {
   try {
+    console.log(trackId);
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}/weeks`,
       {
@@ -27,8 +28,10 @@ export const getTrackWeeks = async (trackId: number) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -50,8 +53,10 @@ export const createTrackWeek = async ({
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -74,7 +79,9 @@ export const updateTrackWeek = async ({
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };

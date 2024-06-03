@@ -13,6 +13,7 @@ import StudentInfo from '@/components/admin/student/StudentInfo';
 import Team from '@/components/admin/teambuilding/Team';
 import { Button } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
+import WeekSelector from '@/components/admin/WeekSelector';
 
 type TItemStatus = 'todo' | 'doing';
 
@@ -121,7 +122,7 @@ export default function TeamBuildingPage() {
 
   return (
     <>
-      <TrackSelector />
+      <WeekSelector />
       <Button>조회</Button>
       <Button>팀추가</Button>
       <Button>저장</Button>
