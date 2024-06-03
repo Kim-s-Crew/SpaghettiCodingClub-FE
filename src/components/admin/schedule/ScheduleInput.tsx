@@ -1,6 +1,9 @@
+import { createSchedule } from '@/apis/schedule';
 import { Button, Input, Spacer, Textarea } from '@nextui-org/react';
+import { create } from 'domain';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import dayjs from 'dayjs';
 
 interface Props {
   selectedDate: string;
@@ -29,6 +32,33 @@ const ScheduleInput = ({ selectedDate, setTimes }: Props) => {
 
       return;
     }
+
+    function convertDateAndTime(dateString: string, timeString: string) {
+      // 날짜 문자열을 ISO 형식으로 변환
+      const [year, month, day] = dateString
+        .split(' ')
+        .map((str) => str.replace(/[^0-9]/g, ''));
+      const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(
+        2,
+        '0',
+      )}`;
+
+      // 변환된 날짜와 시간 문자열을 결합
+      const dateTime = dayjs(`${formattedDate} ${timeString}`).format(
+        'YYYY-MM-DDTHH:mm:ss',
+      );
+
+      return dateTime;
+    }
+
+    const formattedStartTime = convertDateAndTime(selectedDate, startTime);
+    const formattedEndTime = convertDateAndTime(selectedDate, endTime);
+
+    createSchedule({
+      title: inputs.content,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
+    });
 
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const [endHour, endMinute] = endTime.split(':').map(Number);
