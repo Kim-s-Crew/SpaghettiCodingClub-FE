@@ -24,7 +24,7 @@ const TrackSelector = () => {
     return <p>로딩중...</p>;
   }
 
-  console.log(data.payload);
+  // console.log(data.payload);
 
   return (
     <Select

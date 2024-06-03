@@ -16,7 +16,8 @@ import {
   updateTrackWeek,
 } from '@/apis/trackWeek';
 import useStore from '@/zustand/store';
-import { newTrackWeekData, tracksWeekInfo } from '@/types/types';
+import { tracksWeekInfo } from '@/types/types';
+import { toast } from 'react-toastify';
 
 const TrackWeek = () => {
   const queryClient = useQueryClient();
@@ -61,8 +62,7 @@ const TrackWeek = () => {
     if (editWeekId !== null) {
       updateTrackWeekMutation({
         trackId: selectedTrack!.trackId,
-        // 하드코딩 -> 고쳐야함
-        weekId: 1,
+        weekId: editWeekId,
         reqData: weekTitle,
       });
     }
@@ -98,6 +98,17 @@ const TrackWeek = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (weekTitle.trim() === '') {
+      toast.warn('제목을 입력해 주세요.');
+      return;
+    }
+
+    if (new Date(weekDate.startDate) > new Date(weekDate.endDate)) {
+      toast.warn('종료일이 시작일보다 앞서지 않게 해주세요.');
+      return;
+    }
+
     const reqData = {
       trackId: selectedTrack!.trackId,
       weekName: weekTitle,
