@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface Notice {
   trackNoticeTitle: string;
@@ -32,6 +33,11 @@ const NoticeWritePage = () => {
         'trackNotice',
       ] as InvalidateQueryFilters);
       router.replace('/admin/notice');
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
     },
   });
 

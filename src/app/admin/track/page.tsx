@@ -13,6 +13,7 @@ import { createTrack, getTracks, updateTrack } from '@/apis/track';
 import { tracksInfo } from '@/types/types';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Modal from '@/components/ui/Modal';
+import { toast } from 'react-toastify';
 
 const TrackManage = () => {
   const queryClient = useQueryClient();
@@ -35,6 +36,11 @@ const TrackManage = () => {
         'track',
         trackTitle,
       ] as InvalidateQueryFilters);
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
     },
   });
 
@@ -81,6 +87,12 @@ const TrackManage = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (trackTitle.trim() === '') {
+      toast.warn('트랙 이름을 입력해 주세요.');
+      return;
+    }
+
     newTrack(trackTitle);
     setModalOpen(false);
   };

@@ -13,8 +13,10 @@ export const login = async (reqData: loginReqData) => {
     console.log(response);
     sessionStorage.setItem('token', response.headers.authorization);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -33,8 +35,10 @@ export const registerUser = async (reqData: registerReqData) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -52,7 +56,9 @@ export const getUserData = async (uid: number) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };

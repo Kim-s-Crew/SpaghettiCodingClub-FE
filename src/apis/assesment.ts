@@ -26,8 +26,10 @@ export const updateAssessment = async ({
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -45,8 +47,10 @@ export const createAssessment = async (reqBody: assessmentData) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -64,7 +68,9 @@ export const deleteAssessment = async (assessmentId: number | undefined) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };

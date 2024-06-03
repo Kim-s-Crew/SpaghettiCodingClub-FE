@@ -16,8 +16,10 @@ export const getStudents = async (trackId: number) => {
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };
 
@@ -41,7 +43,9 @@ export const changeTrack = async ({
     );
     console.log(response);
     return response.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
   }
 };

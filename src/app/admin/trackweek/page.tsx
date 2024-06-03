@@ -45,6 +45,11 @@ const TrackWeek = () => {
         weekTitle,
       ] as InvalidateQueryFilters);
     },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
+    },
   });
 
   const { mutate: updateTrackWeekMutation } = useMutation({
@@ -54,6 +59,11 @@ const TrackWeek = () => {
         'track',
         weekTitle,
       ] as InvalidateQueryFilters);
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
     },
   });
 
