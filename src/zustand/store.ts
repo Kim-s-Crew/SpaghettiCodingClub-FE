@@ -16,7 +16,7 @@ const useStore = create<Store>()(
   devtools(
     persist(
       (set) => ({
-        selectedTrack: { trackId: 99, trackName: 'placeholder track' },
+        selectedTrack: null,
         selectedTrackWeek: null, // 초기값 설정
         setTrack: (track) => set({ selectedTrack: track }),
         setTrackWeek: (week) => set({ selectedTrackWeek: week }), // 액션 구현

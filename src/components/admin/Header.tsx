@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <header className='flex flex-col justify-center items-center bg-slate-400 w-[200px] h-screen p-6'>
+    <header className='flex flex-col justify-center items-center bg-slate-400 w-[200px] min-w-[200px] h-screen p-6'>
       <div className='mb-8'>
         <Link href={'/'}>
           {' '}

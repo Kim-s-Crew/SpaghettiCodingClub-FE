@@ -5,19 +5,22 @@ import { tracksWeekInfo } from '@/types/types';
 import useStore from '@/zustand/store';
 import { Select, SelectItem } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const WeekSelector = () => {
   const { setTrackWeek, selectedTrackWeek } = useStore((state) => state);
 
   const { selectedTrack } = useStore((state) => state);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['allTrackWeeks'],
     queryFn: () => getTrackWeeks(selectedTrack?.trackId!),
+    enabled: !!selectedTrack,
   });
 
-  console.log(data);
+  useEffect(() => {
+    refetch();
+  }, [selectedTrack, refetch]);
 
   if (isLoading) {
     return <p>로딩중...</p>;
