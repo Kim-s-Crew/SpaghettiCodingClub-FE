@@ -31,8 +31,8 @@ const TrackWeek = () => {
     endDate: '',
   });
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['trackWeek', selectedTrack!.trackId],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['trackWeek'],
     queryFn: () => getTrackWeeks(selectedTrack!.trackId),
     select: (data) => data.payload,
   });
@@ -175,7 +175,12 @@ const TrackWeek = () => {
           </form>
         </Modal>
       )}
-      <TrackSelector />
+      <div className='flex gap-2'>
+        {' '}
+        <TrackSelector />
+        <Button onClick={() => refetch()}>조회</Button>
+      </div>
+
       <Spacer y={10} />
       {data.map((week: tracksWeekInfo) => {
         return (

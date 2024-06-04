@@ -105,3 +105,11 @@ export interface createScheduleData {
   startTime: string;
   endTime: string;
 }
+
+// 주차 data type
+export interface trackWeekData {
+  trackWeekId: number;
+  weekName: string;
+  startDate: string;
+  endDate: string;
+}

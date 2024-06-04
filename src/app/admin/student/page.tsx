@@ -13,7 +13,7 @@ const Student = () => {
   const { selectedTrack } = useStore((state) => state);
   const [searchStudent, setSearchStudent] = useState('');
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['allStudent', selectedTrack!.trackId],
+    queryKey: ['allStudent'],
     queryFn: () => getStudents(selectedTrack!.trackId),
     enabled: !!selectedTrack,
     select: (data) => data.payload,
@@ -30,7 +30,7 @@ const Student = () => {
     <div>
       <div className='flex gap-2'>
         <TrackSelector />
-        {/* <Button onClick={() => refetch()}>조회</Button> */}
+        <Button onClick={() => refetch()}>조회</Button>
       </div>
       <Spacer y={2} />
       <input

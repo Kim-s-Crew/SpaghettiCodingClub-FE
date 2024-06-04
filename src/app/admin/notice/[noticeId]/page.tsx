@@ -11,7 +11,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 const NoticeDetailPage = () => {
@@ -22,8 +22,8 @@ const NoticeDetailPage = () => {
   const router = useRouter();
   const { noticeId } = params;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['trackNotice', noticeId],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['trackNotice'],
     queryFn: () => getTrackNotice(selectedTrack!.trackId, +noticeId),
     enabled: !!noticeId,
     select: (data) => data.payload,
@@ -44,6 +44,10 @@ const NoticeDetailPage = () => {
       toast.error(errorMessage);
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [noticeId, refetch]);
 
   if (isLoading) {
     return <>로딩중</>;

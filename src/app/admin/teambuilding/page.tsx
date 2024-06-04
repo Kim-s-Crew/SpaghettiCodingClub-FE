@@ -1,19 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from 'react-beautiful-dnd';
-import Modal from '@/components/ui/Modal';
-import PlusButton from '@/components/ui/PlusButton';
-import StudentInfo from '@/components/admin/student/StudentInfo';
+import { useEffect, useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import Team from '@/components/admin/teambuilding/Team';
-import { Button } from '@nextui-org/react';
+import { Button, Input, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
 import WeekSelector from '@/components/admin/WeekSelector';
+import { useQuery } from '@tanstack/react-query';
+import { getTrackWeekDetail } from '@/apis/trackWeek';
+import useStore from '@/zustand/store';
+import { set } from 'react-hook-form';
 
 type TItemStatus = 'todo' | 'doing';
 
@@ -28,6 +24,7 @@ export type TItems = {
 };
 
 export default function TeamBuildingPage() {
+  const { selectedTrack, selectedTrackWeek } = useStore((state) => state);
   const initialTeams = {
     '1조': {
       id: '1조',
@@ -46,6 +43,22 @@ export default function TeamBuildingPage() {
       list: ['미희', '래준', '대영', '은채'],
     },
   };
+
+  const { data, refetch } = useQuery({
+    queryKey: ['selectedTrackWeek'],
+    queryFn: () =>
+      getTrackWeekDetail(
+        selectedTrack!.trackId,
+        selectedTrackWeek!.trackWeekId,
+      ),
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [selectedTrackWeek, refetch]);
+
+  console.log(data);
+
   const [teams, setTeams] = useState(initialTeams);
   console.log(teams);
 
@@ -122,9 +135,15 @@ export default function TeamBuildingPage() {
 
   return (
     <>
+      <TrackSelector />
+      <Spacer y={2} />
       <WeekSelector />
+      <Spacer y={2} />
+
       <Button>조회</Button>
-      <Button>팀추가</Button>
+      <Spacer y={2} />
+      <Input placeholder='팀명' />
+      <Button onClick={() => console.log('ghg')}>팀추가</Button>
       <Button>저장</Button>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className='grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2'>

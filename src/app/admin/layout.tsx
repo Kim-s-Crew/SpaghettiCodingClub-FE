@@ -8,7 +8,9 @@ export default function AdminLayout({
   return (
     <div className='flex'>
       <Header />
-      <div className='w-screen p-10'>{children}</div>
+      <div className='w-screen py-10 px-6 flex justify-center'>
+        <div className='w-full max-w-[800px]'>{children}</div>
+      </div>
     </div>
   );
 }
