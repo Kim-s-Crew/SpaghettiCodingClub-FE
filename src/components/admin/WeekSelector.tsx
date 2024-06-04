@@ -37,7 +37,7 @@ const WeekSelector = () => {
 
         setTrackWeek(result);
       }}
-      selectedKeys={[selectedTrackWeek!]}
+      selectedKeys={[selectedTrackWeek!.weekName]}
     >
       {data.payload.map((trackWeek: tracksWeekInfo) => (
         <SelectItem key={trackWeek.weekName}>{trackWeek.weekName}</SelectItem>
