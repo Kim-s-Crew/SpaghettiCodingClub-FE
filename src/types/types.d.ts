@@ -113,3 +113,21 @@ export interface trackWeekData {
   startDate: string;
   endDate: string;
 }
+
+// 서버에서 받아온 팀 data
+export interface ServerTeam {
+  teamId: number;
+  teamName: string;
+  members: { userId: number; userName: string }[];
+}
+
+// 가공을 거친 팀 data
+export interface TeamData {
+  id: string;
+  list: string[] | never[];
+}
+
+// 팀 들의 집합
+export interface Teams {
+  [key: string]: TeamData;
+}

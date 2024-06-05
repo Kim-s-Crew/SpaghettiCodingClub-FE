@@ -85,22 +85,3 @@ export const updateTrackWeek = async ({
     }
   }
 };
-
-// 트랙 주차 상세조회(팀 포함 조회)
-export const getTrackWeekDetail = async (trackId: number, weekId: number) => {
-  try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}/weeks/${weekId}`,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      },
-    );
-    return response.data;
-  } catch (err: any) {
-    if (err.response && err.response.data && err.response.data.message) {
-      throw new Error(err.response.data.message);
-    }
-  }
-};

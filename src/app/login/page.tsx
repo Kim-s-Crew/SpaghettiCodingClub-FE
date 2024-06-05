@@ -37,7 +37,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='이거야이거 flex h-[100vh] items-center '>
+    <div className='flex h-[100vh] items-center '>
       <div className='flex items-center'>
         <div>
           <Image src={nbcIcon} alt='nbc icon' width={800} height={400} />
