@@ -15,13 +15,13 @@ import {
   getTrackWeeks,
   updateTrackWeek,
 } from '@/apis/trackWeek';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { tracksWeekInfo } from '@/types/types';
 import { toast } from 'react-toastify';
 
 const TrackWeek = () => {
   const queryClient = useQueryClient();
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [weekTitle, setWeekTitle] = useState('');
@@ -31,7 +31,7 @@ const TrackWeek = () => {
     endDate: '',
   });
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['trackWeek'],
     queryFn: () => getTrackWeeks(selectedTrack!.trackId),
     select: (data) => data.payload,
@@ -79,9 +79,9 @@ const TrackWeek = () => {
     setModalOpen(false);
   };
 
-  if (isLoading) {
-    return <>로딩중</>;
-  }
+  // if (isLoading) {
+  //   return <>로딩중</>;
+  // }
 
   const openModal = (
     mode: 'create' | 'edit',
@@ -176,31 +176,37 @@ const TrackWeek = () => {
         </Modal>
       )}
       <div className='flex gap-2'>
-        {' '}
         <TrackSelector />
         <Button onClick={() => refetch()}>조회</Button>
       </div>
 
       <Spacer y={10} />
-      {data.map((week: tracksWeekInfo) => {
-        return (
-          <div key={week.trackWeekId} className='flex w-[100%] text-center'>
-            <span className='block w-[40%]'>{week.weekName}</span>
-            <span className='block w-[20%]'>{week.startDate}</span>
-            <span className='block w-[20%]'>{week.endDate}</span>
-            <div className='block w-[20%]'>
-              <span
-                className='cursor-pointer'
-                onClick={() =>
-                  openModal('edit', week.trackWeekId, week.weekName)
-                }
-              >
-                ✏️
-              </span>
-            </div>
-          </div>
-        );
-      })}
+      {data
+        ? data?.length === 0
+          ? '주차가 없습니다'
+          : data.map((week: tracksWeekInfo) => {
+              return (
+                <div
+                  key={week.trackWeekId}
+                  className='flex w-[100%] text-center'
+                >
+                  <span className='block w-[40%]'>{week.weekName}</span>
+                  <span className='block w-[20%]'>{week.startDate}</span>
+                  <span className='block w-[20%]'>{week.endDate}</span>
+                  <div className='block w-[20%]'>
+                    <span
+                      className='cursor-pointer'
+                      onClick={() =>
+                        openModal('edit', week.trackWeekId, week.weekName)
+                      }
+                    >
+                      ✏️
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+        : '트랙을 선택해주세요'}
       <Spacer y={10} />
 
       <PlusButton onClick={() => openModal('create')} />

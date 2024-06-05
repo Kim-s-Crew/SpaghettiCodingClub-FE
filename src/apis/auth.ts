@@ -20,6 +20,11 @@ export const login = async (reqData: loginReqData) => {
   }
 };
 
+// 로그아웃
+export const logout = async () => {
+  sessionStorage.removeItem('token');
+};
+
 // 회원가입
 export const registerUser = async (reqData: registerReqData) => {
   console.log('회원가입 펑션 호출됨');

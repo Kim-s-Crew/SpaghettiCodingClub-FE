@@ -2,7 +2,7 @@
 
 import { deleteTrackNotice, getTrackNotice } from '@/apis/trackNotice';
 import NoticeEdit from '@/components/admin/notice/NoticeEdit';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { Button, Spacer } from '@nextui-org/react';
 import {
   InvalidateQueryFilters,
@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 const NoticeDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const queryClient = useQueryClient();
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const params = useParams();
   const router = useRouter();
   const { noticeId } = params;

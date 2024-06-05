@@ -8,11 +8,12 @@ export const getTracks = async () => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks`,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      },
+      // 필요없음
+      // {
+      //   headers: {
+      //     Authorization: `${token}`,
+      //   },
+      // },
     );
     console.log(response);
     return response.data;
@@ -44,24 +45,6 @@ export const createTrack = async (reqData: string) => {
     }
   }
 };
-
-// 트랙 삭제 - 아직 api 없음
-// export const deleteTracks = async (trackId: number) => {
-//   try {
-//     const response = await axios.delete(
-//       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/tracks/${trackId}`,
-//       {
-//         headers: {
-//           Authorization: `${token}`,
-//         },
-//       },
-//     );
-//     console.log(response);
-//     return response.data;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 // 트랙 수정
 export const updateTrack = async ({ trackId, reqData }: trackUpdateData) => {

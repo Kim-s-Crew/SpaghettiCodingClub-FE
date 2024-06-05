@@ -1,16 +1,16 @@
 'use client';
 import { Button, Spacer } from '@nextui-org/react';
 import { getStudents } from '@/apis/student';
-import React, { useEffect, Suspense, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import TrackSelector from '@/components/admin/TrackSelector';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { personData } from '@/types/types';
 import Link from 'next/link';
 
 const Student = () => {
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const [searchStudent, setSearchStudent] = useState('');
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['allStudent'],
@@ -18,7 +18,6 @@ const Student = () => {
     enabled: !!selectedTrack,
     select: (data) => data.payload,
   });
-  console.log(data);
 
   if (isLoading) {
     return <>로딩중</>;

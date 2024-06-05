@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 import { changeTrack } from '@/apis/student';
 import { useParams } from 'next/navigation';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -21,7 +21,7 @@ const StudentInfo = ({ trackName, trackWeeks }: Props) => {
   const param = useParams();
   const { userId } = param;
   const [isTrackEditing, setIsTrackEditing] = useState(false);
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
 
   const { mutate: updateTrackMutation } = useMutation({
     mutationFn: changeTrack,

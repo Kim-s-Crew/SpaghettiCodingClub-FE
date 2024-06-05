@@ -1,7 +1,7 @@
 'use client';
 import { createTrackNotice } from '@/apis/trackNotice';
 import TrackSelector from '@/components/admin/TrackSelector';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { Input, Spacer, Textarea, Button, Divider } from '@nextui-org/react';
 import {
   InvalidateQueryFilters,
@@ -19,7 +19,7 @@ interface Notice {
 
 const NoticeWritePage = () => {
   const queryClient = useQueryClient();
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const router = useRouter();
   const [notice, setNotice] = useState<Notice>({
     trackNoticeTitle: '',

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Member from './Member';
+import { Button, Spacer } from '@nextui-org/react';
 
 interface ColumnProps {
   col: {
     id: string;
     list: string[];
   };
+  handleDeleteTeam: (id: string) => void;
 }
 
-const Team: React.FC<ColumnProps> = ({ col: { list, id } }) => {
+const Team: React.FC<ColumnProps> = ({
+  col: { list, id },
+  handleDeleteTeam,
+}) => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -19,10 +24,10 @@ const Team: React.FC<ColumnProps> = ({ col: { list, id } }) => {
       {loaded && (
         <Droppable droppableId={id}>
           {(provided) => (
-            <div className='p-5 flex flex-col mt-2'>
+            <div className='p-2 flex flex-col mt-2'>
               <h2>{id}</h2>
               <div
-                className='bg-slate-400 rounded-md p-2 flex flex-col grow mt-1'
+                className='bg-slate-400 rounded-md p-2 flex flex-col min-h-[150px]'
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
@@ -31,6 +36,8 @@ const Team: React.FC<ColumnProps> = ({ col: { list, id } }) => {
                 ))}
                 {provided.placeholder}
               </div>
+              <Spacer y={2} />
+              <Button onClick={() => handleDeleteTeam(id)}>삭제</Button>
             </div>
           )}
         </Droppable>
