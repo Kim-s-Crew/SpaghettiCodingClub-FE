@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login } from '../../apis/auth';
+import { useAuthStore } from '@/zustand/store';
 
 interface FormValues {
   email: string;
@@ -15,6 +16,7 @@ interface FormValues {
 
 const LoginPage = () => {
   const router = useRouter();
+  const { setIsLoggedIn } = useAuthStore();
 
   const {
     register,
@@ -30,6 +32,7 @@ const LoginPage = () => {
     const { email, password } = formData;
     console.log(email, password);
     login({ email, password });
+    setIsLoggedIn(true);
     router.push('/');
   };
 

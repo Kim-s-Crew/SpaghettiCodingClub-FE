@@ -1,9 +1,20 @@
+'use client';
 import Image from 'next/image';
 import React from 'react';
 import logo from '@/assets/images/spaghetti_logo.png';
 import Link from 'next/link';
+import { logout } from '@/apis/auth';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/zustand/store';
 
 const Header = () => {
+  const router = useRouter();
+  const { setIsLoggedIn } = useAuthStore();
+  const HandleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+    router.replace('/');
+  };
   return (
     <header className='flex flex-col justify-center items-center bg-slate-400 w-[200px] min-w-[200px] h-screen p-6'>
       <div className='mb-8'>
@@ -40,7 +51,9 @@ const Header = () => {
           </li>
         </ul>
         <div>
-          <span className='text-3xl'>🚪</span>
+          <span className='text-3xl cursor-pointer' onClick={HandleLogout}>
+            🚪
+          </span>
         </div>
       </div>
     </header>
