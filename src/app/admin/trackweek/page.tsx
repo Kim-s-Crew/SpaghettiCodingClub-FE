@@ -15,13 +15,13 @@ import {
   getTrackWeeks,
   updateTrackWeek,
 } from '@/apis/trackWeek';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { tracksWeekInfo } from '@/types/types';
 import { toast } from 'react-toastify';
 
 const TrackWeek = () => {
   const queryClient = useQueryClient();
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [weekTitle, setWeekTitle] = useState('');

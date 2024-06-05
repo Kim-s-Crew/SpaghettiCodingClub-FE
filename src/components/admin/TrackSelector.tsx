@@ -1,6 +1,6 @@
 'use client';
 import { getTracks } from '@/apis/track';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { Select, SelectItem } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
@@ -16,9 +16,7 @@ const TrackSelector = () => {
     queryFn: getTracks,
   });
 
-  const { setTrack, selectedTrack } = useStore((state) => state);
-  // const setTrack = useStore(state=> state.setTrack)
-  // console.log(selectedTrack);
+  const { setTrack, selectedTrack } = useTrackStore((state) => state);
 
   if (isLoading) {
     return <p>로딩중...</p>;

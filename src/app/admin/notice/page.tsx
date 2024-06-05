@@ -4,13 +4,13 @@ import { Button, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
 
 import Link from 'next/link';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { useQuery } from '@tanstack/react-query';
 import { getTrackNotices } from '@/apis/trackNotice';
 import { noticeData } from '@/types/types';
 
 const Notice = () => {
-  const { selectedTrack } = useStore((state) => state);
+  const { selectedTrack } = useTrackStore((state) => state);
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['trackNotices'],
     queryFn: () => getTrackNotices(selectedTrack!.trackId),

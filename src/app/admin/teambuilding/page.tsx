@@ -3,29 +3,38 @@
 import { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import Team from '@/components/admin/teambuilding/Team';
-import { Button, Input, Spacer } from '@nextui-org/react';
+import { Button, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
 import WeekSelector from '@/components/admin/WeekSelector';
 import { useQuery } from '@tanstack/react-query';
 import { getTrackWeekDetail } from '@/apis/trackWeek';
-import useStore from '@/zustand/store';
-import { set } from 'react-hook-form';
+import { useTrackStore } from '@/zustand/store';
+import { toast } from 'react-toastify';
 
-type TItemStatus = 'todo' | 'doing';
+// type TItemStatus = 'todo' | 'doing';
 
-export type TItem = {
+// export type TItem = {
+//   id: string;
+//   status: TItemStatus;
+//   title: string;
+// };
+
+// export type TItems = {
+//   [key in TItemStatus]: TItem[];
+// };
+
+type TeamData = {
   id: string;
-  status: TItemStatus;
-  title: string;
+  list: string[] | never[];
 };
 
-export type TItems = {
-  [key in TItemStatus]: TItem[];
+type Teams = {
+  [key: string]: TeamData;
 };
 
 export default function TeamBuildingPage() {
-  const { selectedTrack, selectedTrackWeek } = useStore((state) => state);
-  const initialTeams = {
+  const { selectedTrack, selectedTrackWeek } = useTrackStore((state) => state);
+  const initialTeams: Teams = {
     '1조': {
       id: '1조',
       list: ['item 1', 'item 2', 'item 3'],
@@ -38,8 +47,8 @@ export default function TeamBuildingPage() {
       id: '3조',
       list: [],
     },
-    임시조: {
-      id: '임시조',
+    '4조': {
+      id: '4조',
       list: ['미희', '래준', '대영', '은채'],
     },
   };
@@ -57,82 +66,109 @@ export default function TeamBuildingPage() {
     refetch();
   }, [selectedTrackWeek, refetch]);
 
-  console.log(data);
-
   const [teams, setTeams] = useState(initialTeams);
-  console.log(teams);
 
   const onDragEnd = ({ source, destination }: DropResult) => {
-    // Make sure we have a valid destination
     if (destination === undefined || destination === null) return null;
-
-    // Make sure we're actually moving the item
     if (
       source.droppableId === destination.droppableId &&
       destination.index === source.index
     )
       return null;
 
-    // Set start and end variables
     const start = teams[source.droppableId];
     const end = teams[destination.droppableId];
-    console.log(start, end);
-    console.log(source, destination);
-    // If start is the same as end, we're in the same column
+    console.log({ start, end });
+    console.log({ source, destination });
+
     if (start === end) {
-      // Move the item within the list
-      // Start by making a new list without the dragged item
       const newList = start.list.filter(
         (_: any, idx: number) => idx !== source.index,
       );
-
-      // Then insert the item at the right location
       newList.splice(destination.index, 0, start.list[source.index]);
 
-      // Then create a new copy of the column object
       const newCol = {
         id: start.id,
         list: newList,
       };
 
-      // Update the state
       setTeams((state) => ({ ...state, [newCol.id]: newCol }));
-      return null;
     } else {
-      // If start is different from end, we need to update multiple columns
-      // Filter the start list like before
       const newStartList = start.list.filter(
         (_: any, idx: number) => idx !== source.index,
       );
-
-      // Create a new start column
       const newStartCol = {
         id: start.id,
         list: newStartList,
       };
 
-      // Make a new end list array
       const newEndList = end.list;
-
-      // Insert the item into the end list
       newEndList.splice(destination.index, 0, start.list[source.index]);
-
-      // Create a new end column
       const newEndCol = {
         id: end.id,
         list: newEndList,
       };
 
-      // Update the state
       setTeams((state) => ({
         ...state,
         [newStartCol.id]: newStartCol,
         [newEndCol.id]: newEndCol,
       }));
-      return null;
     }
   };
 
+  const handleAddTeam = () => {
+    const existingTeamNumbers = Object.keys(teams)
+      .map((key) => parseInt(key.replace('조', '')))
+      .filter((num) => !isNaN(num));
+
+    const newTeamNumber =
+      existingTeamNumbers.length > 0 ? Math.max(...existingTeamNumbers) + 1 : 1;
+
+    const newTeam = {
+      id: `${newTeamNumber}조`,
+      list: [],
+    };
+
+    setTeams((prevTeams) => ({
+      ...prevTeams,
+      [`${newTeamNumber}조`]: newTeam,
+    }));
+  };
+
+  const handleSaveTeams = () => {
+    const hasEmptyTeam = Object.values(teams).some(
+      (team) => team.list.length === 0,
+    );
+
+    if (hasEmptyTeam) {
+      toast.warn('비어 있는 팀이 있습니다');
+    } else {
+      console.log('Teams saved:', teams);
+    }
+  };
+
+  const handleDeleteTeam = (teamId: string) => {
+    const team = teams[teamId];
+    if (team.list.length > 0) {
+      toast.warn('팀에 배정된 수강생이 있습니다');
+    } else {
+      setTeams((prevTeams) => {
+        const newTeams = { ...prevTeams };
+        delete newTeams[teamId];
+
+        const sortedTeams = Object.keys(newTeams)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .reduce((acc, key, index) => {
+            const newKey = `${index + 1}조`;
+            acc[newKey] = { ...newTeams[key], id: newKey };
+            return acc;
+          }, {} as typeof newTeams);
+
+        return sortedTeams;
+      });
+    }
+  };
   return (
     <>
       <TrackSelector />
@@ -142,13 +178,14 @@ export default function TeamBuildingPage() {
 
       <Button>조회</Button>
       <Spacer y={2} />
-      <Input placeholder='팀명' />
-      <Button onClick={() => console.log('ghg')}>팀추가</Button>
-      <Button>저장</Button>
+      <Button onClick={handleAddTeam}>팀추가</Button>
+      <Button onClick={handleSaveTeams}>저장</Button>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className='grid grid-cols-3 m-[10vh] w-[80%] h-[80vh] gap-2'>
+        <div className='grid grid-cols-5 w-full h-[80vh] gap-2'>
           {Object.values(teams).map((team) => (
-            <Team col={team} key={team.id} />
+            <div key={team.id}>
+              <Team col={team} handleDeleteTeam={handleDeleteTeam} />
+            </div>
           ))}
         </div>
       </DragDropContext>

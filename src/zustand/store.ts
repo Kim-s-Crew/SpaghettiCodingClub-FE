@@ -2,7 +2,7 @@ import { trackWeekData } from '@/types/types';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-interface Store {
+interface TrackStore {
   selectedTrack: {
     trackId: number;
     trackName: string;
@@ -12,7 +12,12 @@ interface Store {
   setTrackWeek: (selectedTrackWeek: trackWeekData) => void; // 새로운 액션 추가
 }
 
-const useStore = create<Store>()(
+interface AuthStore {
+  isLoggedIn: boolean;
+  setIsLoggedIn: (auth: boolean) => void; // 새로운 액션 추가
+}
+
+export const useTrackStore = create<TrackStore>()(
   devtools(
     persist(
       (set) => ({
@@ -27,9 +32,20 @@ const useStore = create<Store>()(
         setTrackWeek: (week) => set({ selectedTrackWeek: week }), // 액션 구현
       }),
       // localStorage key 이름
-      { name: 'selectedTrack' },
+      { name: 'Track' },
     ),
   ),
 );
 
-export default useStore;
+export const useAuthStore = create<AuthStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        isLoggedIn: false,
+        setIsLoggedIn: (auth) => set({ isLoggedIn: auth }), // 액션 구현
+      }),
+      // localStorage key 이름
+      { name: 'Auth' },
+    ),
+  ),
+);

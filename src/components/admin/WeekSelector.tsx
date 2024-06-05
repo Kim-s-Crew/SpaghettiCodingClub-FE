@@ -2,15 +2,15 @@
 
 import { getTrackWeeks } from '@/apis/trackWeek';
 import { tracksWeekInfo } from '@/types/types';
-import useStore from '@/zustand/store';
+import { useTrackStore } from '@/zustand/store';
 import { Select, SelectItem } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
 const WeekSelector = () => {
-  const { setTrackWeek, selectedTrackWeek } = useStore((state) => state);
-
-  const { selectedTrack } = useStore((state) => state);
+  const { setTrackWeek, selectedTrackWeek, selectedTrack } = useTrackStore(
+    (state) => state,
+  );
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['allTrackWeeks'],
