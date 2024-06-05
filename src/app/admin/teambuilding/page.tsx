@@ -6,67 +6,74 @@ import Team from '@/components/admin/teambuilding/Team';
 import { Button, Spacer } from '@nextui-org/react';
 import TrackSelector from '@/components/admin/TrackSelector';
 import WeekSelector from '@/components/admin/WeekSelector';
-import { useQuery } from '@tanstack/react-query';
-import { getTrackWeekDetail } from '@/apis/trackWeek';
+import {
+  InvalidateQueryFilters,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+
 import { useTrackStore } from '@/zustand/store';
 import { toast } from 'react-toastify';
-
-// type TItemStatus = 'todo' | 'doing';
-
-// export type TItem = {
-//   id: string;
-//   status: TItemStatus;
-//   title: string;
-// };
-
-// export type TItems = {
-//   [key in TItemStatus]: TItem[];
-// };
-
-type TeamData = {
-  id: string;
-  list: string[] | never[];
-};
-
-type Teams = {
-  [key: string]: TeamData;
-};
+import { createTeam, getTeams } from '@/apis/team';
+import { ServerTeam, Teams } from '@/types/types';
 
 export default function TeamBuildingPage() {
-  const { selectedTrack, selectedTrackWeek } = useTrackStore((state) => state);
-  const initialTeams: Teams = {
-    '1조': {
-      id: '1조',
-      list: ['item 1', 'item 2', 'item 3'],
-    },
-    '2조': {
-      id: '2조',
-      list: [],
-    },
-    '3조': {
-      id: '3조',
-      list: [],
-    },
-    '4조': {
-      id: '4조',
-      list: ['미희', '래준', '대영', '은채'],
-    },
-  };
+  const queryClient = useQueryClient();
 
-  const { data, refetch } = useQuery({
-    queryKey: ['selectedTrackWeek'],
+  const { selectedTrack, selectedTrackWeek } = useTrackStore((state) => state);
+  // const initialTeams: Teams = {
+  //   '1조': {
+  //     id: '1조',
+  //     list: ['item 1', 'item 2', 'item 3'],
+  //   },
+  //   '2조': {
+  //     id: '2조',
+  //     list: [],
+  //   },
+  // };
+
+  const { data, refetch, isLoading, error } = useQuery({
+    queryKey: ['team'],
     queryFn: () =>
-      getTrackWeekDetail(
-        selectedTrack!.trackId,
-        selectedTrackWeek!.trackWeekId,
-      ),
+      getTeams(selectedTrack!.trackId, selectedTrackWeek!.trackWeekId),
+    enabled: !!selectedTrack && !!selectedTrackWeek,
+    select: (data) => data.payload.teams,
+  });
+
+  useEffect(() => {
+    if (data) {
+      const transformedTeams: Teams = data.reduce(
+        (acc: Teams, team: ServerTeam) => {
+          acc[team.teamName] = {
+            id: team.teamName,
+            list: team.members.map((member) => member.userName),
+          };
+          return acc;
+        },
+        {} as Teams,
+      );
+      setTeams(transformedTeams);
+    }
+  }, [data]);
+
+  const { mutate: createTeamMutation } = useMutation({
+    mutationFn: createTeam,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['team'] as InvalidateQueryFilters);
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error.message || '에러가 발생했습니다. 다시 시도해주세요.';
+      toast.error(errorMessage);
+    },
   });
 
   useEffect(() => {
     refetch();
   }, [selectedTrackWeek, refetch]);
 
-  const [teams, setTeams] = useState(initialTeams);
+  const [teams, setTeams] = useState({} as Teams);
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (destination === undefined || destination === null) return null;
@@ -144,7 +151,12 @@ export default function TeamBuildingPage() {
     if (hasEmptyTeam) {
       toast.warn('비어 있는 팀이 있습니다');
     } else {
-      console.log('Teams saved:', teams);
+      console.log({ teams });
+      createTeamMutation({
+        trackId: selectedTrack!.trackId,
+        trackWeekId: selectedTrackWeek!.trackWeekId,
+        teamData: teams,
+      });
     }
   };
 
@@ -169,6 +181,11 @@ export default function TeamBuildingPage() {
       });
     }
   };
+
+  if (isLoading) {
+    <p>로딩중..</p>;
+  }
+
   return (
     <>
       <TrackSelector />
