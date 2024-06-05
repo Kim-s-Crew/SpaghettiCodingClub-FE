@@ -1,7 +1,7 @@
 'use client';
 import { Button, Spacer } from '@nextui-org/react';
 import { getStudents } from '@/apis/student';
-import React, { useEffect, Suspense, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import TrackSelector from '@/components/admin/TrackSelector';
@@ -18,7 +18,6 @@ const Student = () => {
     enabled: !!selectedTrack,
     select: (data) => data.payload,
   });
-  console.log(data);
 
   if (isLoading) {
     return <>로딩중</>;
