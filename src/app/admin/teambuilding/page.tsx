@@ -16,7 +16,7 @@ import {
 import { useTrackStore } from '@/zustand/store';
 import { toast } from 'react-toastify';
 import { createTeam, getTeams } from '@/apis/team';
-import { ServerTeam, Teams } from '@/types/types';
+import { ServerTeam, Teams, TeamsData, memberData } from '@/types/types';
 
 export default function TeamBuildingPage() {
   const queryClient = useQueryClient();
@@ -40,6 +40,7 @@ export default function TeamBuildingPage() {
     enabled: !!selectedTrack && !!selectedTrackWeek,
     select: (data) => data.payload.teams,
   });
+  console.log('이게 서버에서 온 팀 정보', data);
 
   useEffect(() => {
     if (data) {
@@ -151,12 +152,49 @@ export default function TeamBuildingPage() {
     if (hasEmptyTeam) {
       toast.warn('비어 있는 팀이 있습니다');
     } else {
-      console.log({ teams });
-      createTeamMutation({
-        trackId: selectedTrack!.trackId,
-        trackWeekId: selectedTrackWeek!.trackWeekId,
-        teamData: teams,
-      });
+      console.log(teams);
+
+      const result = [] as TeamsData[];
+      // teams를 순회
+      for (const teamName in teams) {
+        const teamMembers = teams[teamName].list;
+        // 각 팀의 멤버들을 순회
+        for (const memberName of teamMembers) {
+          // serverData에서 해당 멤버의 userId를 찾음
+          for (const team of data) {
+            const member = team.members.find(
+              (member: memberData) => member.userName === memberName,
+            );
+            if (member) {
+              console.log('멤버가 뭔데', member);
+              // 결과 배열에 해당 팀이 이미 있는지 확인
+              const existingTeam = result.find(
+                (item) => item.teamName === teamName,
+              );
+              if (existingTeam) {
+                // 이미 있는 경우, 멤버 ID를 추가
+                existingTeam.memberIds.push(member.userId);
+              } else {
+                // 없는 경우, 새로운 팀 객체를 추가
+                result.push({
+                  teamName: teamName,
+                  memberIds: [member.userId],
+                });
+              }
+            }
+          }
+        }
+      }
+      console.log('결과물', result);
+      //현재 로직은 동명 이인에 대응하지 않음. 동명이인은 고유 식별자를 붙여야 하며 테스트는 안겹치는 사람 이름으로 가능.
+      //서버 연결까지 잘 되어있는것은 확인함.
+      //서버에서 {"message":"해당 유저가 존재하지 않습니다."} 다음의 메시지를 정상적으로 보내옴.
+
+      // createTeamMutation({
+      //   trackId: selectedTrack!.trackId,
+      //   trackWeekId: selectedTrackWeek!.trackWeekId,
+      //   teamData: result,
+      // });
     }
   };
 

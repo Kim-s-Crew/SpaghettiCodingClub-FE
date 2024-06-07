@@ -1,4 +1,4 @@
-import { Teams } from '@/types/types';
+import { Teams, createTeamsProps } from '@/types/types';
 import axios from 'axios';
 
 interface createTeamProps {
@@ -14,7 +14,7 @@ export const createTeam = async ({
   trackId,
   trackWeekId,
   teamData,
-}: createTeamProps) => {
+}: createTeamsProps) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}/trackWeeks/${trackWeekId}/teams`,

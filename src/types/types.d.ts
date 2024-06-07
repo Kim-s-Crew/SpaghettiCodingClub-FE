@@ -36,6 +36,12 @@ export interface noticeData {
   userId: number;
 }
 
+// member data
+export interface memberData {
+  userId: number;
+  userName: string;
+}
+
 export interface newNoticeData {
   trackNoticeTitle: string;
   trackNoticeContent: string;
@@ -130,4 +136,16 @@ export interface TeamData {
 // 팀 들의 집합
 export interface Teams {
   [key: string]: TeamData;
+}
+
+export interface TeamsData {
+  teamName: string;
+  memberIds: number[];
+}
+
+// 여러 팀 동시 생성 params
+export interface createTeamsProps {
+  trackId: number;
+  trackWeekId: number;
+  teamData: TeamsData[];
 }
