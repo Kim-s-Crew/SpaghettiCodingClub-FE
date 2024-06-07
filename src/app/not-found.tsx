@@ -15,7 +15,6 @@ const NotFound = () => {
       <p>페이지를 찾을 수 없습니다.</p>
       <Spacer y={2} />
       <Link href='/'>
-        {' '}
         <Button color='danger' size='md'>
           Back to Home
         </Button>
