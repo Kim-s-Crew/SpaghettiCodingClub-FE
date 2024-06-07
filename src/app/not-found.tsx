@@ -7,7 +7,7 @@ import Link from 'next/link';
 const NotFound = () => {
   return (
     <main
-      className='not-found mt-8 flex flex-col justify-center items-center
+      className='not-found h-screen flex flex-col justify-center items-center
     '
     >
       <h1 className='text-9xl'>404</h1>
