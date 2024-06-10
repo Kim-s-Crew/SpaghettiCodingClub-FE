@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login } from '../../apis/auth';
-import { useAuthStore } from '@/zustand/store';
+import { useAuthStore, useRoleStore, useUserStore } from '@/zustand/store';
 
 interface FormValues {
   email: string;
@@ -17,6 +17,8 @@ interface FormValues {
 const LoginPage = () => {
   const router = useRouter();
   const { setIsLoggedIn } = useAuthStore();
+  const { setRole } = useRoleStore();
+  const { setTrack } = useUserStore();
 
   const {
     register,
@@ -30,9 +32,10 @@ const LoginPage = () => {
 
   const loginHandler: SubmitHandler<FormValues> = async (formData) => {
     const { email, password } = formData;
-    console.log(email, password);
-    login({ email, password });
+    const result = await login({ email, password });
     setIsLoggedIn(true);
+    setRole(result.payload.role);
+    setTrack(result.payload.track);
     router.push('/');
   };
 

@@ -1,7 +1,6 @@
-import Header from '@/components/admin/Header';
-import { useRoleStore } from '@/zustand/store';
+import Header from '@/components/user/Header';
 
-export default function AdminLayout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
