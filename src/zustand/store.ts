@@ -17,6 +17,18 @@ interface AuthStore {
   setIsLoggedIn: (auth: boolean) => void; // 새로운 액션 추가
 }
 
+interface RoleStore {
+  role: string;
+  setRole: (role: string) => void; // 새로운 액션 추가
+}
+
+interface UserStore {
+  track: string;
+  team: number;
+  setTrack: (track: string) => void; // 새로운 액션 추가
+  setTeam: (team: number) => void;
+}
+
 export const useTrackStore = create<TrackStore>()(
   devtools(
     persist(
@@ -46,6 +58,34 @@ export const useAuthStore = create<AuthStore>()(
       }),
       // localStorage key 이름
       { name: 'Auth' },
+    ),
+  ),
+);
+
+export const useRoleStore = create<RoleStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        role: 'USER',
+        setRole: (role) => set({ role }), // 액션 구현
+      }),
+      // localStorage key 이름
+      { name: 'Role' },
+    ),
+  ),
+);
+
+export const useUserStore = create<UserStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        track: '',
+        team: 9999,
+        setTrack: (track: string) => set({ track }),
+        setTeam: (team: number) => set({ team }), // 액션 구현
+      }),
+      // localStorage key 이름
+      { name: 'UserData' },
     ),
   ),
 );

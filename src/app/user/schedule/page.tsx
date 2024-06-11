@@ -1,10 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Calendar from 'react-calendar';
 import dayjs from 'dayjs';
 import Modal from '@/components/ui/Modal';
 import ScheduleInput from '@/components/admin/schedule/ScheduleInput';
 import ScheduleVisualizer from '@/components/admin/schedule/ScheduleVisualizer';
+import { getTeamSchedules } from '@/apis/schedule';
+import { useQuery } from '@tanstack/react-query';
 
 type scheduleType = {
   content: string;
@@ -27,6 +29,14 @@ const CalendarPage = () => {
   //   const [showSchedule, setShowSchedule] = useState(false);
   console.log(schedules);
   // console.log(dayList);
+
+  // 이부분 지금 정상작동 하지 않음. 수정 필요
+  const { data } = useQuery({
+    queryKey: ['teamSchedules'],
+    queryFn: () => getTeamSchedules(3),
+    select: (data) => data,
+  });
+  console.log(data);
 
   //임시 test 용
   const [times, setTimes] = useState<Time[]>([]);

@@ -1,7 +1,7 @@
-import Header from '@/components/admin/Header';
+import Header from '@/components/user/Header';
 import Footer from '@/components/ui/Footer';
 
-export default function AdminLayout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
