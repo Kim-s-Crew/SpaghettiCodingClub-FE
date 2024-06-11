@@ -1,5 +1,5 @@
 import Header from '@/components/admin/Header';
-import { useRoleStore } from '@/zustand/store';
+import Footer from '@/components/ui/Footer';
 
 export default function AdminLayout({
   children,
@@ -9,8 +9,11 @@ export default function AdminLayout({
   return (
     <div className='flex'>
       <Header />
-      <div className='w-screen py-10 px-6 flex justify-center'>
-        <div className='w-full max-w-[800px]'>{children}</div>
+      <div className='flex flex-col justify-between grow'>
+        <div className='w-full py-10 flex justify-center '>
+          <div className='w-full max-w-[800px]'>{children}</div>
+        </div>
+        <Footer />
       </div>
     </div>
   );

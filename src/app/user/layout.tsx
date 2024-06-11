@@ -1,4 +1,5 @@
 import Header from '@/components/user/Header';
+import Footer from '@/components/ui/Footer';
 
 export default function UserLayout({
   children,
@@ -8,8 +9,11 @@ export default function UserLayout({
   return (
     <div className='flex'>
       <Header />
-      <div className='w-screen py-10 px-6 flex justify-center'>
-        <div className='w-full max-w-[800px]'>{children}</div>
+      <div className='flex flex-col justify-between grow'>
+        <div className='w-full py-10 flex justify-center '>
+          <div className='w-full max-w-[800px]'>{children}</div>
+        </div>
+        <Footer />
       </div>
     </div>
   );

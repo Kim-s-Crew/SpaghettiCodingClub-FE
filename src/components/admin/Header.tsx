@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { logout } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useAuthStore, useRoleStore } from '@/zustand/store';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
   const router = useRouter();
@@ -15,6 +16,9 @@ const Header = () => {
     setIsLoggedIn(false);
     router.replace('/');
   };
+  const queryClient = useQueryClient();
+  const result = queryClient.getQueryData(['loggedInUser']);
+  console.log('되나?', result);
 
   // 미들웨어 성공하면 이부분은 지우자!!
   const { role } = useRoleStore();
