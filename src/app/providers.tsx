@@ -1,8 +1,12 @@
 // app/providers.tsx
 'use client';
 
-import { NextUIProvider } from '@nextui-org/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextUIProvider, Spinner } from '@nextui-org/react';
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -18,12 +22,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
             staleTime: 60 * 1000,
           },
         },
+        queryCache: new QueryCache({
+          onError: (error) => {
+            console.log('error', error.message);
+          },
+        }),
       }),
   );
   return (
     <QueryClientProvider client={queryClient}>
       <NextUIProvider>
         {children}
+
         <ReactQueryDevtools initialIsOpen={false} />
         <ToastContainer />
       </NextUIProvider>
