@@ -37,6 +37,12 @@ export default function Home() {
           <li>
             <Link href={'/admin/teambuilding'}>팀빌딩</Link>
           </li>
+          <li>
+            <Link href={'/user/mypage'}>유저 마이페이지</Link>
+          </li>
+          <li>
+            <Link href={'/admin/mypage'}>어드민 마이페이지</Link>
+          </li>
         </ul>
       </div>
     </>

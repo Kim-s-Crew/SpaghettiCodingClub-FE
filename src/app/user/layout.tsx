@@ -10,7 +10,7 @@ export default function UserLayout({
     <div className='flex'>
       <Header />
       <div className='flex flex-col justify-between grow'>
-        <div className='w-full py-10 flex justify-center '>
+        <div className='w-full h-full py-10 flex justify-center '>
           <div className='w-full max-w-[800px]'>{children}</div>
         </div>
         <Footer />
