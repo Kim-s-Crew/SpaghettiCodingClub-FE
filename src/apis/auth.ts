@@ -95,7 +95,7 @@ export const deleteUser = async (password: string) => {
     const response = await axios.delete(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auths/withDraw`,
       {
-        data: password,
+        data: { password: password },
         headers: {
           Authorization: `${token}`,
         },
