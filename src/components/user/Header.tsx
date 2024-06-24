@@ -16,7 +16,7 @@ const Header = () => {
     if (typeof window !== 'undefined') router.replace('/');
   };
   return (
-    <header className='flex flex-col justify-center items-center bg-slate-400 w-[200px] min-w-[200px] h-screen p-6'>
+    <header className='flex flex-col justify-center items-center bg-peach w-[200px] min-w-[200px] h-screen p-6'>
       <div className='mb-8'>
         <Link href={'/'}>
           {' '}
