@@ -7,7 +7,12 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <div className='flex flex-col items-center justify-center py-2 bg-slate-300'>
-      <span>Spaghetti Coding Club. All rights reserved.</span>
+      <div className='flex gap-2 '>
+        <div>Kim&apos;s Crew</div>
+        <Divider orientation='vertical' />
+        <span>kimscrew.spc@gmail.com</span>
+      </div>
+
       <Spacer y={2} />
       <div className='flex'>
         <div className='flex gap-1 mx-3'>
@@ -40,6 +45,10 @@ const Footer = () => {
           </Link>
         </div>
       </div>
+
+      <Spacer y={2} />
+
+      <span>&copy;2024 Spaghetti Coding Club. All rights reserved.</span>
     </div>
   );
 };

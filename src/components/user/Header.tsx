@@ -24,7 +24,7 @@ const Header = () => {
         </Link>
       </div>
       <div className='flex flex-col justify-between items-end flex-1'>
-        <ul className='flex flex-col items-center gap-2'>
+        <ul className='flex flex-col items-center gap-2 font-bold'>
           <li>
             <Link href={'/user/notice'}>공지게시판</Link>
           </li>

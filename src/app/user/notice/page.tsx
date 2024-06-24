@@ -7,13 +7,19 @@ import { useTrackStore } from '@/zustand/store';
 import { useQuery } from '@tanstack/react-query';
 import { getTrackNotices } from '@/apis/trackNotice';
 import { noticeData } from '@/types/types';
+import { getLoggedInUserData } from '@/apis/auth';
 
 const NoticePage = () => {
-  const { selectedTrack } = useTrackStore((state) => state);
-  const { data, isLoading, refetch } = useQuery({
+  const { data: loggedInUserData } = useQuery({
+    queryKey: ['loggedInUser'],
+    queryFn: () => getLoggedInUserData(),
+  });
+
+  const loggedInUserTrackId = loggedInUserData?.payload?.trackId;
+  const { data, isLoading } = useQuery({
     queryKey: ['trackNotices'],
-    queryFn: () => getTrackNotices(selectedTrack!.trackId),
-    enabled: !!selectedTrack,
+    queryFn: () => getTrackNotices(loggedInUserTrackId),
+    enabled: !!loggedInUserData,
     select: (data) => data.payload,
   });
 
