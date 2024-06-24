@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login } from '../../apis/auth';
-import { useAuthStore, useRoleStore, useUserStore } from '@/zustand/store';
+import { useAuthStore, useUserStore } from '@/zustand/store';
 import {
   InvalidateQueryFilters,
   useMutation,
@@ -24,7 +24,7 @@ interface FormValues {
 const LoginPage = () => {
   const router = useRouter();
   const { setIsLoggedIn } = useAuthStore();
-  const { setRole } = useRoleStore();
+  // const { setRole } = useRoleStore();
   const { setTrack } = useUserStore();
 
   // const queryClient = useQueryClient();
@@ -65,7 +65,7 @@ const LoginPage = () => {
     const result = await login({ email, password });
     // loginMutation({ email, password });
     setIsLoggedIn(true);
-    setRole(result.payload.role);
+    // setRole(result.payload.role);
     setTrack(result.payload.track);
     if (typeof window !== 'undefined') {
       router.push('/');
