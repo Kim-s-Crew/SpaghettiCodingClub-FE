@@ -13,7 +13,7 @@ const MyPage = () => {
     queryKey: ['loggedInUser'],
     queryFn: getLoggedInUserData,
     select: (data) => data.payload as currentUserData,
-    gcTime: 0,
+    staleTime: 0,
   });
   console.log(data);
 
