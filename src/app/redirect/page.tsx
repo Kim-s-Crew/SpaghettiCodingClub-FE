@@ -23,7 +23,7 @@ const RedirectPage = () => {
   useEffect(() => {
     if (!isLoading && loggedInUser) {
       if (loggedInUser.role === 'ADMIN') {
-        router.replace('/admin');
+        router.replace('/admin/student');
       } else {
         router.replace('/user');
       }

@@ -226,6 +226,7 @@ export default function TeamBuildingPage() {
 
   return (
     <>
+      <h1 className='text-2xl font-bold mb-4'>팀 빌딩</h1>
       <TrackSelector />
       <Spacer y={2} />
       <WeekSelector />
