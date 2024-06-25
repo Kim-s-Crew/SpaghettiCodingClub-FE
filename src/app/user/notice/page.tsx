@@ -12,6 +12,7 @@ const NoticePage = () => {
   const { data: loggedInUserData } = useQuery({
     queryKey: ['loggedInUser'],
     queryFn: getLoggedInUserData,
+    staleTime: 0,
   });
 
   const loggedInUserTrackId = loggedInUserData?.payload?.trackId;

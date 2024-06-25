@@ -8,6 +8,7 @@ import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login } from '../../apis/auth';
 import { useAuthStore, useUserStore } from '@/zustand/store';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface FormValues {
   email: string;
@@ -19,6 +20,8 @@ const LoginPage = () => {
   const { setIsLoggedIn } = useAuthStore();
   // const { setRole } = useRoleStore();
   const { setTrack } = useUserStore();
+  // const queryClient = useQueryClient();
+  // queryClient.invalidateQueries({ queryKey: ['loggedInUser'] });
 
   // const queryClient = useQueryClient();
 
@@ -32,27 +35,6 @@ const LoginPage = () => {
   const watchEmail = watch('email');
   const watchPassword = watch('password');
 
-  // const { data } = useQuery({
-  //   queryKey: ['loggedInUser'],
-  //   queryFn: () => login({ email: 'test', password: 'test' }),
-  //   select: (data) => data.payload,
-  //   enabled: false,
-  //   gcTime: 1000 * 60 * 60 * 5,
-  // });
-
-  // const { mutate: loginMutation } = useMutation({
-  //   mutationFn: login,
-  //   onSuccess: async (data) => {
-  //     console.log('여기!!', data);
-  //     await queryClient.setQueryData(['loggedInUser'], data.payload);
-  //   },
-  //   onError: (error: any) => {
-  //     const errorMessage =
-  //       error.message || '에러가 발생했습니다. 다시 시도해주세요.';
-  //     toast.error(errorMessage);
-  //   },
-  // });
-
   const loginHandler: SubmitHandler<FormValues> = async (formData) => {
     const { email, password } = formData;
     const result = await login({ email, password });
@@ -61,7 +43,7 @@ const LoginPage = () => {
     // setRole(result.payload.role);
     setTrack(result.payload.track);
     if (typeof window !== 'undefined') {
-      router.push('/');
+      router.push('/redirect');
     }
   };
 

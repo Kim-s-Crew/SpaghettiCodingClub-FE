@@ -17,6 +17,7 @@ const UserPage = () => {
     queryKey: ['loggedInUser'],
     queryFn: getLoggedInUserData,
     select: (data) => data.payload as currentUserData,
+    staleTime: 0,
   });
 
   const { data: trackNotices } = useQuery({

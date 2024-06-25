@@ -72,6 +72,7 @@ export const getUserData = async (uid: number) => {
 // 로그인 한 유저 정보 조회
 export const getLoggedInUserData = async () => {
   try {
+    const token = sessionStorage.getItem('token');
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`,
       {

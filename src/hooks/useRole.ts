@@ -13,7 +13,7 @@ const useRole = (): Role | null => {
     queryFn: getLoggedInUserData,
     select: (data) => data.payload,
     enabled: !!queryClient.getQueryData(['loggedInUser']), // 쿼리가 존재하는 경우에만 실행
-    gcTime: 0,
+    staleTime: 0,
   });
 
   useEffect(() => {
