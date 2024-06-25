@@ -37,14 +37,9 @@ const Header = () => {
       <div className='flex flex-col justify-between items-end flex-1'>
         <ul className='flex flex-col items-center gap-2 font-bold'>
           <li>
-            <Link href={'/'}>팀 빌딩</Link>
-          </li>
-          <li>
             <Link href={'/admin/student'}>수강생 관리</Link>
           </li>
-          <li>
-            <Link href={'/admin/student/userId'}>수강생 상세</Link>
-          </li>
+
           <li>
             <Link href={'/admin/track'}>트랙 관리</Link>
           </li>
@@ -53,9 +48,6 @@ const Header = () => {
           </li>
           <li>
             <Link href={'/admin/notice'}>공지사항 관리</Link>
-          </li>
-          <li>
-            <Link href={'/admin/schedule'}>일정 관리</Link>
           </li>
           <li>
             <Link href={'/admin/teambuilding'}>팀 빌딩</Link>
