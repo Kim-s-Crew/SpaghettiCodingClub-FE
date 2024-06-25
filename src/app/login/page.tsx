@@ -8,13 +8,6 @@ import { Button, Input, Spacer } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login } from '../../apis/auth';
 import { useAuthStore, useUserStore } from '@/zustand/store';
-import {
-  InvalidateQueryFilters,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 
 interface FormValues {
   email: string;
@@ -73,10 +66,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='flex h-[100vh] items-center '>
+    <div className='flex h-[100vh] items-center justify-center p-auto'>
       <div className='flex items-center'>
-        <div>
-          <Image src={nbcIcon} alt='nbc icon' width={800} height={400} />
+        <div className=''>
+          <Image src={nbcIcon} alt='nbc icon' width={600} height={300} />
         </div>
         <div>
           <form

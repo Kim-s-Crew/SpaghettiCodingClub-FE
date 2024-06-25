@@ -1,5 +1,4 @@
 'use client';
-import { getTracks } from '@/apis/track';
 import { useUserStore } from '@/zustand/store';
 import { useQuery } from '@tanstack/react-query';
 import NoticeSection from '@/components/user/notice/NoticeSection';
@@ -20,11 +19,11 @@ const UserPage = () => {
     select: (data) => data.payload as currentUserData,
   });
 
-  const { data: trackNotices, isLoading } = useQuery({
+  const { data: trackNotices } = useQuery({
     queryKey: ['trackNotices'],
     queryFn: () => getTrackNotices(loggedInUser!.trackId),
     enabled: !!loggedInUser,
-    select: (data) => data.payload,
+    select: (data) => data.payload as noticeData[],
   });
   console.log('트랙공지들', trackNotices);
 
