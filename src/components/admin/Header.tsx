@@ -2,19 +2,24 @@
 import Image from 'next/image';
 import React from 'react';
 import logo from '@/assets/images/spaghetti_logo.png';
+import logoutIcon from '@/assets/images/logoutIcon.webp';
 import Link from 'next/link';
 import { logout } from '@/apis/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/zustand/store';
 import { useQueryClient } from '@tanstack/react-query';
 import useRole from '@/hooks/useRole';
+import { currentUserRawData } from '@/types/types';
 
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
-  console.log(pathname);
   const queryClient = useQueryClient();
   const { setIsLoggedIn } = useAuthStore();
+  const currentUser = queryClient.getQueryData<currentUserRawData>([
+    'loggedInUser',
+  ]);
+  const userName = currentUser?.payload.username;
 
   const HandleLogout = () => {
     logout();
@@ -59,9 +64,12 @@ const Header = () => {
             <Link href={'/admin/teambuilding'}>팀 빌딩</Link>
           </li>
         </ul>
-        <div>
+        <div className='flex flex-col w-full justify-start'>
+          <Link href={'/admin/mypage'}>
+            <span>{userName} 님</span>
+          </Link>
           <span className='text-3xl cursor-pointer' onClick={HandleLogout}>
-            🚪
+            <Image src={logoutIcon} alt='logo' width={40} height={50} />
           </span>
         </div>
       </div>

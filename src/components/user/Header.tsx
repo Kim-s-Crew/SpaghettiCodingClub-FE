@@ -2,15 +2,24 @@
 import Image from 'next/image';
 import React from 'react';
 import logo from '@/assets/images/spaghetti_logo.png';
+import logoutIcon from '@/assets/images/logoutIcon.webp';
+
 import Link from 'next/link';
 import { logout } from '@/apis/auth';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { useAuthStore } from '@/zustand/store';
+import { useQueryClient } from '@tanstack/react-query';
+import { currentUserRawData } from '@/types/types';
 
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
+  const currentUser = queryClient.getQueryData<currentUserRawData>([
+    'loggedInUser',
+  ]);
+  const userName = currentUser?.payload.username;
 
   const { setIsLoggedIn } = useAuthStore();
   const HandleLogout = () => {
@@ -41,8 +50,12 @@ const Header = () => {
           </li>
         </ul>
         <div>
+          <Link href={'/user/mypage'}>
+            <span>{userName} 님</span>
+          </Link>
+
           <span className='text-3xl cursor-pointer' onClick={HandleLogout}>
-            🚪
+            <Image src={logoutIcon} alt='logo' width={40} height={50} />
           </span>
         </div>
       </div>
