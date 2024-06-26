@@ -171,3 +171,9 @@ export interface currentUserData {
     | null;
   assessment: string | null;
 }
+
+// 로그인한 유저 정보 raw data
+export interface currentUserRawData {
+  message: string;
+  payload: currentUserData;
+}
