@@ -18,10 +18,8 @@ const RedirectPage = () => {
     queryFn: getLoggedInUserData,
     select: (data) => data.payload as currentUserData,
     staleTime: 0,
-    refetchOnMount: true,
   });
 
-  // let role;
   if (isFetching) {
     return <SpinnerModal message='로딩중' />;
   }
@@ -34,17 +32,9 @@ const RedirectPage = () => {
     }
   }
 
-  // console.log('리디렉 롤', role);
-
   if (isLoading) {
     return <SpinnerModal message='로그인 중입니다.' />;
   }
-
-  // if (role === 'ADMIN') {
-  //   router.replace('/admin');
-  // } else {
-  //   router.replace('/user');
-  // }
 
   return <div>RedirectPage</div>;
 };
