@@ -8,11 +8,11 @@ import { getLoggedInUserData, logout } from '@/apis/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/zustand/store';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import useRole from '@/hooks/useRole';
 import { currentUserRawData } from '@/types/types';
 
 const Header = () => {
   const pathname = usePathname();
+  console.log(pathname);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setIsLoggedIn } = useAuthStore();
@@ -40,7 +40,9 @@ const Header = () => {
   }
 
   const isActive = (path: string) => {
-    return pathname.startsWith(path) ? 'bg-gray-200' : '';
+    const matchExactOrWithSlash =
+      pathname === path || pathname.startsWith(`${path}/`);
+    return matchExactOrWithSlash ? 'bg-gray-200' : '';
   };
 
   return (
