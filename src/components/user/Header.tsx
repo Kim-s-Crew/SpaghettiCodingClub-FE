@@ -40,7 +40,7 @@ const Header = () => {
           <Image src={logo} alt='logo' width={200} height={100} />
         </Link>
       </div>
-      <div className='flex flex-col justify-between items-end flex-1'>
+      <div className='flex flex-col justify-between items-center flex-1'>
         <ul className='flex flex-col items-center gap-2 font-bold'>
           <li className={isActive('/user/notice')}>
             <Link href={'/user/notice'}>공지게시판</Link>
