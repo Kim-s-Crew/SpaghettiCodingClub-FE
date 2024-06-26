@@ -13,10 +13,10 @@ export default function Home() {
             <Link href={'/register'}>회원가입</Link>
           </li>
           <li>
-            <Link href={'/admin/student'}>수강생 관리</Link>
+            <Link href={'/admin/student'}>관리자 홈</Link>
           </li>
           <li>
-            <Link href={'/admin/student/userid'}>수강생 관리(개인)</Link>
+            <Link href={'/user'}>유저 홈</Link>
           </li>
           <li>
             <Link href={'/admin/track'}>트랙 관리</Link>

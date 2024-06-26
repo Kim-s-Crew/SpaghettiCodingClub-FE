@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import logo from '@/assets/images/spaghetti_logo.png';
-import logoutIcon from '@/assets/images/logoutIcon.webp';
+import logoutIcon from '@/assets/images/logoutIcon.svg';
 
 import Link from 'next/link';
 import { getLoggedInUserData, logout } from '@/apis/auth';
@@ -32,18 +32,17 @@ const Header = () => {
   };
 
   const isActive = (path: string) => {
-    return pathname.startsWith(path) ? 'bg-gray-200' : '';
+    return pathname.startsWith(path) ? 'text-lg text-myPointColor' : '';
   };
 
   return (
-    <header className='flex flex-col justify-center items-center bg-peach w-[200px] min-w-[200px] h-screen p-6'>
+    <header className='flex flex-col justify-center items-center bg-peach w-[200px] min-w-[200px] min-h-screen p-6 fixed'>
       <div className='mb-8'>
         <Link href={'/'}>
-          {' '}
           <Image src={logo} alt='logo' width={200} height={100} />
         </Link>
       </div>
-      <div className='flex flex-col justify-between items-center flex-1'>
+      <div className='flex flex-col w-full justify-between items-center flex-1'>
         <ul className='flex flex-col items-center gap-2 font-bold'>
           <li className={isActive('/user/notice')}>
             <Link href={'/user/notice'}>공지게시판</Link>
@@ -52,14 +51,16 @@ const Header = () => {
             <Link href={'/user/schedule'}>팀 일정</Link>
           </li>
         </ul>
-        <div>
+        <div className='flex w-full items-center justify-around'>
           <Link href={'/user/mypage'}>
-            <span>{userName} 님</span>
+            <span>
+              <strong>{userName}</strong> 님
+            </span>
           </Link>
 
-          <span className='text-3xl cursor-pointer' onClick={HandleLogout}>
-            <Image src={logoutIcon} alt='logo' width={40} height={50} />
-          </span>
+          <figure className='text-3xl cursor-pointer' onClick={HandleLogout}>
+            <Image src={logoutIcon} alt='logo' width={25} height={35} />
+          </figure>
         </div>
       </div>
     </header>

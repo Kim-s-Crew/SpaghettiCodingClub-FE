@@ -6,9 +6,15 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className='flex flex-col items-center justify-center py-3 bg-white border-t'>
+    <div className='flex flex-col items-center justify-center py-3 bg-white border-t sticky b-0'>
       <div className='flex flex-wrap gap-2 justify-center '>
-        <div>Kim&apos;s Crew</div>
+        <Link
+          target='_blank'
+          href='https://github.com/Kim-s-Crew'
+          className='font-bold'
+        >
+          Kim&apos;s Crew
+        </Link>
         <span className='text-[#dbdbdb]'>|</span>
         <span>kimscrew.spc@gmail.com</span>
         <Spacer y={2} />
