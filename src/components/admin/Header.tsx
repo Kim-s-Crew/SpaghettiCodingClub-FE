@@ -4,10 +4,10 @@ import React from 'react';
 import logo from '@/assets/images/spaghetti_logo.png';
 import logoutIcon from '@/assets/images/logoutIcon.webp';
 import Link from 'next/link';
-import { logout } from '@/apis/auth';
+import { getLoggedInUserData, logout } from '@/apis/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/zustand/store';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useRole from '@/hooks/useRole';
 import { currentUserRawData } from '@/types/types';
 
@@ -16,10 +16,14 @@ const Header = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setIsLoggedIn } = useAuthStore();
-  const currentUser = queryClient.getQueryData<currentUserRawData>([
-    'loggedInUser',
-  ]);
-  const userName = currentUser?.payload.username;
+
+  const { data } = useQuery({
+    queryKey: ['loggedInUser'],
+    queryFn: getLoggedInUserData,
+    select: (data: currentUserRawData) => data.payload,
+  });
+
+  const userName = data?.username;
 
   const HandleLogout = () => {
     logout();
