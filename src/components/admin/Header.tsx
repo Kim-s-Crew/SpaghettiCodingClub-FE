@@ -21,6 +21,7 @@ const Header = () => {
     queryKey: ['loggedInUser'],
     queryFn: getLoggedInUserData,
     select: (data: currentUserRawData) => data.payload,
+    refetchOnMount: true,
   });
 
   const userName = data?.username;
@@ -32,7 +33,7 @@ const Header = () => {
     if (typeof window !== 'undefined') router.replace('/');
   };
 
-  const role = useRole();
+  const role = data?.role;
   console.log(role);
   if (role && role !== 'ADMIN') {
     if (typeof window !== 'undefined') router.replace('/user/askadmin');
