@@ -237,7 +237,7 @@ export default function TeamBuildingPage() {
       <Button onClick={handleAddTeam}>팀추가</Button>
       <Button onClick={handleSaveTeams}>저장</Button>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className='grid grid-cols-5 w-full h-[80vh] gap-2'>
+        <div className='grid grid-cols-5 w-full h-min-[30vh] gap-2'>
           {Object.values(teams).map((team) => (
             <div key={team.id}>
               <Team col={team} handleDeleteTeam={handleDeleteTeam} />

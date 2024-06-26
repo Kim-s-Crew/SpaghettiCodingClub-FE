@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import SpinnerModal from '@/components/ui/SpinnerModal';
 import React, { useEffect } from 'react';
+import { Spinner } from '@nextui-org/react';
 
 const RedirectPage = () => {
   const router = useRouter();
@@ -21,7 +22,11 @@ const RedirectPage = () => {
   });
 
   if (isFetching) {
-    return <SpinnerModal message='로딩중' />;
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <Spinner size='lg' label='로딩중입니다' />
+      </div>
+    );
   }
 
   if (!isLoading && loggedInUser) {
@@ -33,10 +38,18 @@ const RedirectPage = () => {
   }
 
   if (isLoading) {
-    return <SpinnerModal message='로그인 중입니다.' />;
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <Spinner size='lg' label='로그인중입니다' />
+      </div>
+    );
   }
 
-  return <div>RedirectPage</div>;
+  return (
+    <div className='flex justify-center items-center h-screen'>
+      <Spinner size='lg' label='이동중입니다' />
+    </div>
+  );
 };
 
 export default RedirectPage;

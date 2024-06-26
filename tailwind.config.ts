@@ -13,9 +13,9 @@ const config: Config = {
       colors: {
         myPointColor: '#F31260',
         peach: '#ffecee',
-        footer: '#efece7',
+        myBrown: '#574143',
         lightBlue: '#B2EBF2',
-        lavender: '#E1BEE7',
+        lavender: 'black',
         mintGreen: '#C8E6C9',
       },
       backgroundImage: {
