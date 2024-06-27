@@ -1,6 +1,20 @@
+'use client';
+
+import { useAuthStore } from '@/zustand/store';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  console.log('isloggedin', isLoggedIn);
+
+  if (isLoggedIn && sessionStorage.getItem('token')) {
+    router.replace('/redirect');
+  } else {
+    router.replace('/login');
+  }
+
   return (
     <>
       <div>
