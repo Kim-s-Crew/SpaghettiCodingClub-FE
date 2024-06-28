@@ -3,8 +3,7 @@ import { getLoggedInUserData } from '@/apis/auth';
 import { currentUserData } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import SpinnerModal from '@/components/ui/SpinnerModal';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Spinner } from '@nextui-org/react';
 
 const RedirectPage = () => {
