@@ -127,6 +127,13 @@ export interface ServerTeam {
   members: { userId: number; userName: string }[];
 }
 
+// 팀 미배정 인원 data
+export interface UnassignedStudents {
+  userId: number;
+  username: string;
+  email: string;
+}
+
 // 가공을 거친 팀 data
 export interface TeamData {
   id: string;
