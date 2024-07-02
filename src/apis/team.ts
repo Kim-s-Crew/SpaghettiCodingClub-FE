@@ -53,3 +53,25 @@ export const getTeams = async (trackId: number, weekId: number) => {
     }
   }
 };
+
+// 팀 미배정 인원 조회
+export const getUnassignedStudents = async (
+  trackId: number,
+  weekId: number,
+) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${trackId}/trackWeeks/${weekId}/teams/users-without-team`,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+  }
+};

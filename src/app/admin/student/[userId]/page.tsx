@@ -96,7 +96,7 @@ const UserId = () => {
   }
 
   if (!data) {
-    return <p>데이터가 없습니다.</p>;
+    return <p>데이터가 없습니다. 잠시 기다렸다 새로고침 해주세요</p>;
   }
 
   const { trackName, email, role, trackId, trackWeeks, username, assessment } =

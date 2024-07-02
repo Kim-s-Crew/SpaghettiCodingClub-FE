@@ -15,7 +15,7 @@ import {
 
 import { useTrackStore } from '@/zustand/store';
 import { toast } from 'react-toastify';
-import { createTeam, getTeams } from '@/apis/team';
+import { createTeam, getTeams, getUnassignedStudents } from '@/apis/team';
 import { ServerTeam, Teams, TeamsData, memberData } from '@/types/types';
 
 export default function TeamBuildingPage() {
@@ -32,6 +32,16 @@ export default function TeamBuildingPage() {
   //     list: [],
   //   },
   // };
+
+  // console.log('test', getUnassignedStudents(1, 1));
+
+  const { data: noTeam } = useQuery({
+    queryKey: ['withoutTeam'],
+    queryFn: () => getUnassignedStudents(2, 1),
+    // enabled: !!selectedTrack && !!selectedTrackWeek,
+    // select: (data) => data.payload.teams,
+  });
+  console.log('팀없음', noTeam);
 
   const { data, refetch, isLoading, error } = useQuery({
     queryKey: ['team'],
