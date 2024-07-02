@@ -6,6 +6,9 @@ import { Button, Checkbox, Input, Select, SelectItem } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '../../apis/auth';
+import { getTracks } from '@/apis/track';
+import TrackSelector from '@/components/admin/TrackSelector';
+import { useTrackStore } from '@/zustand/store';
 
 interface FormValues {
   username: string;
@@ -23,10 +26,19 @@ const RegisterPage = () => {
     { value: '스프링 백엔드 엔지니어 양성과정 3회차' },
     { value: '프론트엔드 엔지니어 양성과정 3회차' },
   ];
+  // const getTracksForRegister = async () => {
+  //   const response = await getTracks();
+  //   return response.payload;
+  // };
+
   const [inputs, setInputs] = useState({
     track: '',
     isAdmin: false,
   });
+
+  const selectedTrack = useTrackStore(
+    (state) => state.selectedTrack?.trackName,
+  );
 
   const {
     register,
@@ -46,7 +58,7 @@ const RegisterPage = () => {
       username,
       email,
       password,
-      selectedTrack,
+      // selectedTrack,
       confirmPassword,
       isAdmin,
       recommend,
@@ -57,7 +69,8 @@ const RegisterPage = () => {
       email,
       password,
       checkPassword: confirmPassword,
-      track: inputs.track,
+      // track: inputs.track,
+      track: selectedTrack,
     };
 
     const NewAdminUser = {
@@ -92,6 +105,8 @@ const RegisterPage = () => {
     console.log('회원가입취소');
     if (typeof window !== 'undefined') router.replace('/');
   };
+
+  // console.log(getTracksForRegister());
 
   return (
     <div className='flex justify-center items-center h-screen'>
@@ -173,7 +188,7 @@ const RegisterPage = () => {
               비밀번호가 일치하지 않습니다
             </p>
           )}
-        <Select
+        {/* <Select
           aria-label='track'
           name='track'
           items={selectItems}
@@ -184,7 +199,8 @@ const RegisterPage = () => {
           {(selectItem) => (
             <SelectItem key={selectItem.value}>{selectItem.value}</SelectItem>
           )}
-        </Select>
+        </Select> */}
+        {inputs.isAdmin ? null : <TrackSelector />}
         <div>
           <Checkbox
             id='adminCheck'
@@ -238,8 +254,9 @@ const RegisterPage = () => {
                 !watchName ||
                 !watchEmail ||
                 !watchPassword ||
-                !watchConfirmPassword ||
-                !inputs.track
+                !watchConfirmPassword
+                //  ||
+                // !inputs.track
               }
             >
               회원가입
