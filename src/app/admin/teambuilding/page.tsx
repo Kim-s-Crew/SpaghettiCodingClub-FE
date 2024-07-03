@@ -315,11 +315,12 @@ export default function TeamBuildingPage() {
         memberIds: data.namesWithId.map((member) => member.userId),
       }));
     console.log(processedData);
-    createTeamMutation({
-      trackId: selectedTrack!.trackId,
-      trackWeekId: selectedTrackWeek!.trackWeekId,
-      teamData: processedData,
-    });
+    // 이 아래는 서버 고쳐지면 다시 살릴것!
+    // createTeamMutation({
+    //   trackId: selectedTrack!.trackId,
+    //   trackWeekId: selectedTrackWeek!.trackWeekId,
+    //   teamData: processedData,
+    // });
   };
 
   const handleDeleteTeam = (teamId: string) => {
