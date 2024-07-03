@@ -138,6 +138,7 @@ export interface UnassignedStudents {
 export interface TeamData {
   id: string;
   list: string[] | never[];
+  namesWithId: memberData[];
 }
 
 // 팀 들의 집합

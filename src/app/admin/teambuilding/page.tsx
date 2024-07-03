@@ -70,6 +70,9 @@ export default function TeamBuildingPage() {
           acc[team.teamName] = {
             id: team.teamName,
             list: team.members.map((member) => member.userName),
+            namesWithId: team.members.map((member) => {
+              return { userId: member.userId, userName: member.userName };
+            }),
           };
           return acc;
         },
@@ -82,6 +85,9 @@ export default function TeamBuildingPage() {
         팀없음: {
           id: '팀없음',
           list: noTeam.map((member) => member.username),
+          namesWithId: noTeam.map((member) => {
+            return { userId: member.userId, userName: member.username };
+          }),
         },
       };
       setTeams((prevTeams) => ({ ...prevTeams, ...transformedNoTeam }));
@@ -92,6 +98,9 @@ export default function TeamBuildingPage() {
     mutationFn: createTeam,
     onSuccess: async () => {
       await queryClient.invalidateQueries(['team'] as InvalidateQueryFilters);
+      await queryClient.invalidateQueries([
+        'withoutTeam',
+      ] as InvalidateQueryFilters);
     },
     onError: (error: any) => {
       const errorMessage =
@@ -106,6 +115,55 @@ export default function TeamBuildingPage() {
 
   const [teams, setTeams] = useState({} as Teams);
   console.log('state 에 저장된 teams', teams);
+
+  // const onDragEnd = ({ source, destination }: DropResult) => {
+  //   if (destination === undefined || destination === null) return null;
+  //   if (
+  //     source.droppableId === destination.droppableId &&
+  //     destination.index === source.index
+  //   )
+  //     return null;
+
+  //   const start = teams[source.droppableId];
+  //   const end = teams[destination.droppableId];
+  //   console.log({ start, end });
+  //   console.log({ source, destination });
+
+  //   if (start === end) {
+  //     const newList = start.list.filter(
+  //       (_: any, idx: number) => idx !== source.index,
+  //     );
+  //     newList.splice(destination.index, 0, start.list[source.index]);
+
+  //     const newCol = {
+  //       id: start.id,
+  //       list: newList,
+  //     };
+
+  //     setTeams((state) => ({ ...state, [newCol.id]: newCol }));
+  //   } else {
+  //     const newStartList = start.list.filter(
+  //       (_: any, idx: number) => idx !== source.index,
+  //     );
+  //     const newStartCol = {
+  //       id: start.id,
+  //       list: newStartList,
+  //     };
+
+  //     const newEndList = end.list;
+  //     newEndList.splice(destination.index, 0, start.list[source.index]);
+  //     const newEndCol = {
+  //       id: end.id,
+  //       list: newEndList,
+  //     };
+
+  //     setTeams((state) => ({
+  //       ...state,
+  //       [newStartCol.id]: newStartCol,
+  //       [newEndCol.id]: newEndCol,
+  //     }));
+  //   }
+  // };
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (destination === undefined || destination === null) return null;
@@ -126,9 +184,14 @@ export default function TeamBuildingPage() {
       );
       newList.splice(destination.index, 0, start.list[source.index]);
 
+      const newNamesWithId = [...start.namesWithId];
+      const movedMember = newNamesWithId.splice(source.index, 1)[0];
+      newNamesWithId.splice(destination.index, 0, movedMember);
+
       const newCol = {
         id: start.id,
         list: newList,
+        namesWithId: newNamesWithId,
       };
 
       setTeams((state) => ({ ...state, [newCol.id]: newCol }));
@@ -136,16 +199,24 @@ export default function TeamBuildingPage() {
       const newStartList = start.list.filter(
         (_: any, idx: number) => idx !== source.index,
       );
+      const newStartNamesWithId = [...start.namesWithId];
+      const movedMember = newStartNamesWithId.splice(source.index, 1)[0];
+
       const newStartCol = {
         id: start.id,
         list: newStartList,
+        namesWithId: newStartNamesWithId,
       };
 
-      const newEndList = end.list;
+      const newEndList = [...end.list];
       newEndList.splice(destination.index, 0, start.list[source.index]);
+      const newEndNamesWithId = [...end.namesWithId];
+      newEndNamesWithId.splice(destination.index, 0, movedMember);
+
       const newEndCol = {
         id: end.id,
         list: newEndList,
+        namesWithId: newEndNamesWithId,
       };
 
       setTeams((state) => ({
@@ -167,6 +238,7 @@ export default function TeamBuildingPage() {
     const newTeam = {
       id: `${newTeamNumber}조`,
       list: [],
+      namesWithId: [],
     };
 
     setTeams((prevTeams) => ({
@@ -235,6 +307,19 @@ export default function TeamBuildingPage() {
 
   const handleSaveTeams = () => {
     console.log(teams);
+
+    const processedData = Object.entries(teams)
+      .filter(([key, _]) => key !== '팀없음') // "팀없음" 객체 무시
+      .map(([teamName, data]) => ({
+        teamName,
+        memberIds: data.namesWithId.map((member) => member.userId),
+      }));
+    console.log(processedData);
+    createTeamMutation({
+      trackId: selectedTrack!.trackId,
+      trackWeekId: selectedTrackWeek!.trackWeekId,
+      teamData: processedData,
+    });
   };
 
   const handleDeleteTeam = (teamId: string) => {
