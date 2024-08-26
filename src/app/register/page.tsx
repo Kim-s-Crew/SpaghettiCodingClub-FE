@@ -246,7 +246,7 @@ const RegisterPage = () => {
                 icon: 'success',
                 title: '이메일이 발송되었습니다',
                 html: `${result.message}. <br>
-                  추천인이 이메일 인증 후 관리자 권한이 부여됩니다.`,
+                  추천인이 이메일 인증 후 회원가입 버튼을 누르세요.`,
               });
             }}
           >
