@@ -5,7 +5,11 @@ import nbcIcon from '@/assets/images/spaghetti_logo.png';
 import { Button, Checkbox, Input, Select, SelectItem } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { registerUser, verifyUserEmail } from '../../apis/auth';
+import {
+  registerUser,
+  verifyRecommendEmail,
+  verifyUserEmail,
+} from '../../apis/auth';
 import Swal from 'sweetalert2';
 
 interface FormValues {
@@ -216,18 +220,39 @@ const RegisterPage = () => {
             관리자이신가요?
           </Checkbox>
         </div>
-        <Input
-          aria-label='추천인 메일'
-          type='text'
-          placeholder='추천인 email'
-          {...register('recommend', {
-            // required: '이메일을 입력하세요',
-            pattern: {
-              value: /^\S+@\S+$/i,
-              message: '올바른 메일 형식이 아닙니다',
-            },
-          })}
-        />
+        <div className='flex w-full gap-1'>
+          <Input
+            aria-label='추천인 메일'
+            type='text'
+            placeholder='추천인 email'
+            {...register('recommend', {
+              // required: '이메일을 입력하세요',
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: '올바른 메일 형식이 아닙니다',
+              },
+            })}
+          />
+          <Button
+            size='md'
+            color='danger'
+            onClick={async () => {
+              const result = await verifyRecommendEmail(
+                getValues('email'),
+                getValues('recommend'),
+              );
+              console.log(result);
+              Swal.fire({
+                icon: 'success',
+                title: '이메일이 발송되었습니다',
+                html: `${result.message}. <br>
+                  추천인이 이메일 인증 후 관리자 권한이 부여됩니다.`,
+              });
+            }}
+          >
+            인증하기
+          </Button>
+        </div>
         {errors.recommend && (
           <p className='text-red-500 text-xs text-center'>
             {errors.recommend.message}
