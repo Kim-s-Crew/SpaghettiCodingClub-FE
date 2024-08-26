@@ -140,3 +140,19 @@ export const updatePassword = async (
     }
   }
 };
+
+//verify email
+export const verifyUserEmail = async (email: string) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auths/send-user-verification-link`,
+      { email },
+    );
+    console.log(response);
+    return response.data;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+  }
+};
